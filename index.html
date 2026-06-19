@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="University reading/exam simulation, DeeEx">
+
+   
+    
+    <!--fonts-->
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>DeeEx</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>DeeEx</h1>
+            </div>
+            <div>
+                <nav class="main-bar">
+                    <ul class="nav-ul">
+                        <li class="nav-item"><a href="#" class="nav-link active">Home</a></li>
+                        <li class="nav-item"><a href="courses.html" class="nav-link">Courses</a></li>
+                        <li class="nav-item"><a href="assessment.html" class="nav-link">Assesssment</a></li>
+                        <li class="nav-item"><a href="institution.html" class="nav-link">Institution</a></li>
+                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                    </ul>
+                    <div class="nav-auth">
+                        <a href="login.html">Login</a>
+                        <button onclick="goToSignup()" class="primary-btn">Sign Up</button>
+                    </div>
+                    <div class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+
+                    </div>
+                </nav>
+            </div>
+
+
+        </div>
+    </header>
+
+    <section class="hero">
+        <h1>The ultimate  digital assessment experience</h1>
+        <p>Read materials, take practice exams and track your academic progress — all in one place built for university students.</p>
+        <div class="herobtns">
+            <button onclick="goToSignup()" class="btn-primary">Sign Up</button>
+            <button onclick="goToService()" class="btn-outline">Learn More</button>
+        </div>
+    </section>
+
+    <section class="features">
+        <!--features section-->
+        <h1>Everything you need to succeed</h1>
+        <p>Three powerful tools in one platform</p>
+        <div>
+            <div class="featuresdiv card">
+                <img src="icons/book.svg" alt="book">
+                <h3>Reading materials</h3>
+                <p>Access organised notes and textbooks sorted by subjectand course level</p>
+            </div>
+            <div class="featuresdiv card">
+                <img src="icons/pencil.svg" alt="pencil">
+               <h3>Practice tests</h3>
+                <p>Attempt past questions and timed mock exams before your real exam.</p>
+            </div>
+            <div class="featuresdiv card">
+                <img src="icons/chart-simple.svg" alt="stat">
+                <h3>Progress tracking</h3>
+                <p>See your scores over time nd know exactly where to improve.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="stat">
+        <h1>Trusted by students across Universities</h1>
+        <p>Join thousands already studying smarter</p>
+        <div>
+            <div class="statdiv card">
+                <h1>2,400+</h1>
+                <p>Active students</p>
+            </div>
+            <div class="statdiv card">
+                <h1>500+</h1>
+                <p>Practice questions</p>
+            </div>
+            <div class="statdiv card">
+                <h1>30+</h1>
+                <p>Subjects covered</p>
+            </div>
+        </div>
+
+        <!--stats section-->
+    </section>
+
+
+    <section class="show-case">
+        <div>
+            <div class="show-case-div card">
+                <h1>DeeEx</h1>
+                <p>Your personal performance tracker for university students. DeeEx gives you study notes, recommended text books, simplified notes, it also gives you a timed practice tests/exams, and turns your results into clear insights - so you study smarter and actually see your growth.</p>
+                <a href=""><img src="icons/youtube.svg" alt=""></a>
+                <a href=""><img src="icons/facebook.svg" alt=""></a>
+                <a href=""><img src="icons/square-x-twitter.svg" alt=""></a>
+                <a href=""><img src="icons/instagram.svg" alt=""></a>
+            </div>
+            <div class="show-case-div card">
+                <h1>Quick Links</h1>
+                <p>Courses, Courses, Assessment, Performance rate, Take test/Exams.</p>
+            </div>
+            <div class="show-case-div remark card">
+                <h1>Stay Updated</h1>
+                <p>Subscribe and follow our Instagram, Youtube, Twitter X, and facebook page for more updates and easy flow on the platform.</p>
+                
+                    <textarea name="remark" id="myText" cols="30" rows="5" placeholder="What's your expectation"></textarea>
+                    <button onclick="sendEmail()">Submit</button>
+                
+            </div>
+        </div>
+    </section>
+
+    <footer>
+      <p>&COPY; 2026 DeeEx. All rights reserved.</p>
+        <div class="footerlinks">
+            <a href="#">About</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Contact us</a>
+        </div>   
+    </footer>
+    
+
+    <script src="main.js"></script>
+</body>
+</html>
