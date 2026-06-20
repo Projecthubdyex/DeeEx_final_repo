@@ -6,6 +6,7 @@ body{
     padding-top: 100px; /* remove with time */
 }
 
+
 .card{
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -670,4 +671,229 @@ footer a:visited{
     .fused {
         flex-direction: column-reverse !important;
     }
+}
+
+
+/* ============================
+   INSTITUTION PAGE
+   ============================ */
+
+.pagehero {
+    padding: 40px 32px;
+    text-align: center;
+}
+
+.pagehero h1 {
+    color: #1E3A5F;
+    font-size: 22px;
+    font-weight: 500;
+    margin: 0 0 8px;
+}
+
+.pagehero p {
+    color: #4B5563;
+    font-size: 13px;
+    margin: 0;
+}
+
+.sec {
+    padding: 36px 32px;
+}
+
+.sec-alt {
+    padding: 36px 32px;
+}
+
+.sh {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1E3A5F;
+    margin: 0 0 20px;
+    text-align: center;
+}
+
+.ab-row {
+    display: flex;
+    gap: 24px;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ab-text {
+    flex: none;
+    max-width: 1024px;
+    min-width: 220px;
+    font-size: 13px;
+    color: #4B5563;
+    line-height: 1.9;
+}
+
+.ab-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    min-width: 140px;
+    justify-content: center;
+}
+
+.ab-stat {
+    background-color: #89bcff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    flex: 1;
+    min-width: 110px;
+}
+
+.ab-stat h3 {
+    font-size: 22px;
+    font-weight: 500;
+    color: #1a56db;
+    margin: 0 0 2px;
+}
+
+.ab-stat p {
+    font-size: 11px;
+    color: #4B5563;
+    margin: 0;
+}
+
+.inst-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    justify-content: center;
+}
+
+.inst-card {
+    background-color: #67a6f8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    flex: 1;
+    min-width: 160px;
+    max-width: 220px;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.inst-card:hover {
+    border-color: #93C5FD;
+    transform: translateY(-3px);
+}
+
+.inst-ico {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    color: #1a56db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    margin: 0 auto 10px;
+}
+
+.inst-card h4 {
+    font-size: 13px;
+    font-weight: 500;
+    color: #1E3A5F;
+    margin: 0 0 4px;
+}
+
+.inst-card p {
+    font-size: 11px;
+    color: #4B5563;
+    margin: 0;
+}
+
+/* MODAL */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(30, 58, 95, 0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-card {
+    background: white;
+    border-radius: 14px;
+    padding: 32px 28px;
+    max-width: 360px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 22px;
+    color: #4B5563;
+    cursor: pointer;
+}
+
+.modal-ico {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #a6caf8;
+    color: #1a56db;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    margin: 0 auto 14px;
+}
+
+.modal-card h3 {
+    font-size: 16px;
+    font-weight: 500;
+    color: #1E3A5F;
+    margin: 0 0 8px;
+}
+
+.modal-card p {
+    font-size: 13px;
+    color: #4B5563;
+    margin: 0 0 16px;
+    line-height: 1.6;
+}
+
+.modal-stats {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+}
+
+.modal-stats div {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-stats strong {
+    font-size: 16px;
+    color: #1a56db;
+}
+
+.modal-stats span {
+    font-size: 11px;
+    color: #4B5563;
 }

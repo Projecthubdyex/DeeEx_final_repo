@@ -203,3 +203,94 @@ function updateDepartments() {
 
 // Run this as soon as the page loads
 document.addEventListener('DOMContentLoaded', populateFaculties);
+
+
+// ============================
+// INSTITUTION PAGE DATA
+// ============================
+
+const universityList = [
+    { name: "University of Nigeria, Nnsuka", students: "1,200", departments: "32" },
+    { name: "University of Ibadan", students: "850", departments: "28" },
+    { name: "University of Lagos", students: "620", departments: "40" },
+    { name: "Federal University of Owerri", students: "540", departments: "30" }
+];
+
+// ============================
+// BUILD UNIVERSITY CARDS
+// ============================
+
+function loadUniversities() {
+    const grid = document.getElementById('universityGrid');
+    if (!grid) return; // only run on institution page
+
+    universityList.forEach(function(uni, index) {
+        const card = document.createElement('div');
+        card.className = 'inst-card';
+        card.onclick = function() { openUniversityModal(index); };
+
+        card.innerHTML = `
+            <div class="inst-ico"><i class="ti ti-building-bank"></i></div>
+            <h4>${uni.name}</h4>
+            <p>${uni.students} students</p>
+        `;
+
+        grid.appendChild(card);
+    });
+}
+
+// ============================
+// UNIVERSITY MODAL
+// ============================
+
+function openUniversityModal(index) {
+    const uni = universityList[index];
+
+    document.getElementById('modalUniName').textContent = uni.name;
+    document.getElementById('modalUniDesc').textContent =
+        `${uni.name} is one of the partner institutions on DeeEx, giving students access to organised materials and practice tests across their departments.`;
+    document.getElementById('modalUniStudents').textContent = uni.students;
+    document.getElementById('modalUniDept').textContent = uni.departments;
+
+    document.getElementById('universityModal').classList.add('active');
+}
+
+function closeUniversityModal() {
+    document.getElementById('universityModal').classList.remove('active');
+}
+
+// ============================
+// COUNTING NUMBER ANIMATION
+// ============================
+
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter');
+    if (counters.length === 0) return; // nothing to animate on this page
+
+    counters.forEach(function(counter) {
+        const target = parseInt(counter.getAttribute('data-target'));
+        let current = 0;
+        const increment = target / 60; // controls speed (60 steps)
+
+        function updateCount() {
+            current += increment;
+            if (current < target) {
+                counter.textContent = Math.ceil(current).toLocaleString();
+                requestAnimationFrame(updateCount);
+            } else {
+                counter.textContent = target.toLocaleString();
+            }
+        }
+
+        updateCount();
+    });
+}
+
+// ============================
+// RUN ON PAGE LOAD
+// ============================
+
+document.addEventListener('DOMContentLoaded', function() {
+    loadUniversities();
+    animateCounters();
+});
