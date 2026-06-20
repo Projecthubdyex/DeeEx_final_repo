@@ -60,16 +60,19 @@
                         <input type="text" id="university" name="university" placeholder="e.g. University of Lagos" required>
                     </div>
 
-                    <div class="fg">
-                        <label for="department">Department</label>
-                        <select id="department" name="department" required>
-                            <option value="">Select department</option>
-                            <option value="computer-science">Computer Science</option>
-                            <option value="engineering">Engineering</option>
-                            <option value="medicine">Medicine</option>
-                            <option value="law">Law</option>
-                        </select>
-                    </div>
+                        <div class="fg">
+                            <label for="faculty">Faculty</label>
+                            <select id="faculty" name="faculty" required onchange="updateDepartments()">
+                            <option value="">Select faculty</option>
+                            </select>
+                        </div>
+
+                        <div class="fg">
+                            <label for="department">Department</label>
+                            <select id="department" name="department" required>
+                            <option value="">Select faculty first</option>
+                            </select>
+                        </div>
 
                     <div class="fg">
                         <label for="level">Level</label>
