@@ -555,7 +555,7 @@ footer a:visited{
     max-width: 640px;
     border-radius: 12px;
     overflow: hidden;
-    border: 0.5px solid #dce3f0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2)
 }
 
 .side-info{
