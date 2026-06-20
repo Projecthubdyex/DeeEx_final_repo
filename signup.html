@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>DeeEx</title>
+</head>
+<body>
+
+     <header>
+        <div class="container">
+            <div class="logo">
+                <h1>DeeEx</h1>
+            </div>
+        </div>
+    </header>
+
+    <div class="pagewrap">
+        <div class="fused" style="flex-direction: row-reverse;">
+
+            <div class="side-info">
+                <h2>Already have an account?</h2>
+                <p>Login to continue reading your materials, taking tests and tracking your progress.</p>
+                <button onclick="goToLogin()">Login instead</button>
+            </div>
+
+            <div class="side-form">
+                <h2>Create account</h2>
+                <p class="sub">Join DeeEx as a university student</p>
+
+                <div class="social-login">
+                    <button type="button" class="btn-google" onclick="signupWithGoogle()">
+                        <img src="icons/google-color-icon.svg" alt="Google" class="social-icon">
+                        Continue with Google
+                    </button>
+                    <button type="button" class="btn-apple" onclick="signupWithApple()">
+                        <img src="icons/apple-icon.svg" alt="Apple" class="social-icon">
+                        Continue with Apple
+                    </button>
+                </div>
+
+                 <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <form id="signupForm">
+                    <div class="fg">
+                        <label for="fullname">Full name</label>
+                        <input type="text" id="fullname" name="fullname" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="fg">
+                        <label for="email">Email address</label>
+                        <input type="email" id="email" name="email" placeholder="you@university.edu" required>
+                    </div>
+
+                    <div class="fg">
+                        <label for="university">University</label>
+                        <input type="text" id="university" name="university" placeholder="e.g. University of Lagos" required>
+                    </div>
+
+                    <div class="fg">
+                        <label for="department">Department</label>
+                        <select id="department" name="department" required>
+                            <option value="">Select department</option>
+                            <option value="computer-science">Computer Science</option>
+                            <option value="engineering">Engineering</option>
+                            <option value="medicine">Medicine</option>
+                            <option value="law">Law</option>
+                        </select>
+                    </div>
+
+                    <div class="fg">
+                        <label for="level">Level</label>
+                        <select id="level" name="level" required>
+                            <option value="">Select level</option>
+                            <option value="100">100 level</option>
+                            <option value="200">200 level</option>
+                            <option value="300">300 level</option>
+                            <option value="400">400 level</option>
+                            <option value="500">500 level</option>
+                        </select>
+                    </div>
+
+                    <div class="fg">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" name="password" placeholder="Create a password" required>
+                    </div>
+
+                    <div class="fg">
+                        <label for="confirmPassword">Confirm password</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Repeat your password" required>
+                    </div>
+
+                    <button type="submit" class="btn-full">Create account</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+
+
+    <script src="main.js"></script>
+</body>
+</html>

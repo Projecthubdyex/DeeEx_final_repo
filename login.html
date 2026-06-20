@@ -7,18 +7,51 @@
     <title>DeeEx</title>
 </head>
 <body>
-    <div class="fused">
-        <div class="side-info">
-           <h2>New to DeeEx?</h2>
-           <p>Create a free account to access reading materials, practice tests and track your progress.</p>
-           <button onclick="goToSignup()">Create an account</button> 
-        </div>
-        <div class="side-form">
-            <h2>Welcome back</h2>
-            <p>Login to your DeeEx account</p>
-            <input type="em">
-        </div>
+    <div class="pagewrap">
+        <div class="fused">
+            <div class="side-info">
+            <h2>New to DeeEx?</h2>
+            <p>Create a free account to access reading materials, practice tests and track your progress.</p>
+            <button onclick="goToSignup()">Create an account</button> 
+            </div>
+            <div class="side-form">
+                <h2>Welcome back</h2>
+                <p>Login to your DeeEx account</p>
+                
+                <div class="social-login">
+                    <button type="button" class="btn-google" onclick="loginWithGoogle()">
+                        <img src="icons/google-color-icon.svg" alt="Google" class="social-icon">
+                        Continue with Google
 
+                    </button>
+                    <button type="button" class="btn-apple" onclick="loginWithApple()">
+                        <img src="icons/apple-icon.svg" alt="Apple" class="social-icon">
+                        Continue with Apple
+
+                    </button>
+                </div>
+
+                <div class="didider">
+                    <span>or</span>
+                </div>
+
+                <form id="loginForm">
+                    <div class="fg">
+                        <label for="email">Email address</label>
+                        <input type="email" name="email" id="email" placeholder="praise@example.com" required>
+
+                    </div>
+
+                    <div class="fg">
+                        <label for="password">Password</label>
+                        <input type="password" name="password" id="password" placeholder="Enter your password" required>
+                    </div>
+                    <button type="submit" class="btn-full">Login</button>
+                </form>
+
+            </div>
+
+        </div>
     </div>
 
 

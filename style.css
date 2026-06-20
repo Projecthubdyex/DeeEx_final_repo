@@ -43,12 +43,17 @@ body{
     padding: 0 24px;
    
 }
+.container > div:nth-child(2) {
+    flex: 1;
+    display: flex;
+}
 .main-bar{
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
     width: 100%;
+    flex-wrap: nowrap;
 }
 header{
     background-color: #c5dbf7;
@@ -81,10 +86,11 @@ a{
 }
 .nav-ul{
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    gap: 5em;
-    margin-right: 35em;
+    gap: 2em;
+    flex-shrink: 1;
+    flex: 1;
 }
 .nav-link{
     transition: 0.7s ease;
@@ -115,7 +121,7 @@ a{
     align-items: center;
     gap: 17px;
     flex-shrink: 0;
-    margin-left: 100px;
+    margin-left: 0;
 }
 .nav-auth a{
     columns: #61A9FF;
@@ -132,7 +138,7 @@ a{
     font-size: 14px;
     cursor: pointer;
 }
-@media(max-width:768px){
+@media(max-width:1024px){
     .hamburger{
         display: block;
     }
@@ -483,4 +489,185 @@ footer a:visited{
     align-items: center;
     text-align: center;
     border-radius: 12px;
+}
+
+.social-login{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.btn-google, .btn-apple{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 40px;
+    cursor: pointer;
+    background: white;
+    border: 1px solid #dce3f0;
+    color: #1E3A5F;
+}
+
+.btn-google:hover, .btn-apple:hover{
+    background: #F0F7FF;
+}
+
+.social-icon{
+    width: 18px;
+    height: 18px;
+}
+
+.divider{
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 16px o;
+    color: #4B5563;
+    font-size: 12px;
+}
+
+.divider::before, .divider::after{
+    content: '';
+    flex: 1;
+    border-bottom: 0.5px solid #dce3f0;
+}
+
+.divider span{
+    padding: 0 10px;
+}
+
+.pagewrap{
+    padding: 40px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.fused{
+    display: flex;
+    width: 100%;
+    max-width: 640px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 0.5px solid #dce3f0;
+}
+
+.side-info{
+    background: #1a56db;
+    color: white;
+    flex: 1;
+    padding: 40px 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.side-info h2{
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0 0 10px;
+    color: white;
+}
+
+.side-info p{
+    font-size: 13px;
+    color: #bfdbfe;
+    margin: 0 0 20px;
+    line-height: 1.7;
+}
+
+.side-info button{
+    background: transparent;
+    color: white;
+    border-radius: 40px;
+    padding: 8px 18px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.side-form{
+    border: white;
+    flex: 2;
+    padding: 40px 32px;
+}
+
+.side-form h2 {
+    font-size: 18px;
+    font-weight: 500;
+    color: #1E3A5F;
+    margin: 0 0 4px;
+}
+
+.side-form p {
+    font-size: 13px;
+    color: #4B5563;
+    margin: 0 0 20px;
+}
+
+.fg {
+    margin-bottom: 14px;
+}
+
+.fg label {
+    font-size: 12px;
+    color: #4B5563;
+    display: block;
+    margin-bottom: 4px;
+}
+
+.fg input {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px 10px;
+    border: 1px solid #dce3f0;
+    border-radius: 8px;
+    box-sizing: border-box;
+}
+
+.btn-full {
+    background: #1a56db;
+    color: white;
+    border: none;
+    border-radius: 40px;
+    padding: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 6px;
+}
+
+@media (max-width: 1024px) {
+    .fused {
+        flex-direction: column;
+    }
+}
+
+/* Signup page - select dropdown styling */
+.fg select {
+    width: 100%;
+    font-size: 13px;
+    padding: 8px 10px;
+    border: 1px solid #dce3f0;
+    border-radius: 8px;
+    box-sizing: border-box;
+    background: white;
+    color: #1E3A5F;
+}
+
+/* Make the fused card a bit wider for the longer signup form */
+.fused {
+    max-width: 700px;
+}
+
+/* Mobile - form shows first, info panel below */
+@media (max-width: 1024px) {
+    .fused {
+        flex-direction: column-reverse !important;
+    }
 }
