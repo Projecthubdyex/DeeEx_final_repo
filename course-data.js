@@ -1,0 +1,211 @@
+const courseData = {
+    "bio-103": {
+        code: "BIO 103",
+        title: "Introduction to Genetics for Medical Students",
+        subject: "bio",
+        subjectLabel: "Biology",
+        description: "Core genetics concepts for medical and life science students.",
+        questions: 20,
+        minutes: 30,
+        topics: ["Mendelian inheritance", "DNA structure and replication", "Gene expression basics", "Genetic disorders overview"],
+        why: "Genetics forms the foundation for understanding human disease, inheritance patterns, and modern medical diagnostics."
+    },
+    "bio-107": {
+        code: "BIO 107",
+        title: "General Practical Biology I",
+        subject: "bio",
+        subjectLabel: "Biology",
+        description: "Lab techniques and practical biology fundamentals.",
+        questions: 15,
+        minutes: 20,
+        topics: ["Microscopy techniques", "Specimen preparation", "Lab safety procedures", "Observation and recording"],
+        why: "Practical skills are essential for any lab-based biology course and future fieldwork or research."
+    },
+    "bio-151": {
+        code: "BIO 151",
+        title: "General Biology",
+        subject: "bio",
+        subjectLabel: "Biology",
+        description: "Foundational biology concepts across cell, plant, and animal systems.",
+        questions: 20,
+        minutes: 28,
+        topics: ["Cell structure and function", "Plant biology basics", "Animal physiology", "Ecology fundamentals"],
+        why: "A strong grasp of general biology underpins almost every further course in the life sciences."
+    },
+    "chm-101": {
+        code: "CHM 101",
+        title: "Principles of Chemistry",
+        subject: "chm",
+        subjectLabel: "Chemistry",
+        description: "Atomic structure, bonding, and basic chemical reactions.",
+        questions: 18,
+        minutes: 25,
+        topics: ["Atomic structure", "Chemical bonding", "Stoichiometry", "Reaction types"],
+        why: "These principles are the building blocks for every other chemistry course you'll take."
+    },
+    "chm-107": {
+        code: "CHM 107",
+        title: "Principles of Inorganic Chemistry",
+        subject: "chm",
+        subjectLabel: "Chemistry",
+        description: "Periodic trends, inorganic compounds, and reaction types.",
+        questions: 18,
+        minutes: 25,
+        topics: ["Periodic trends", "Inorganic compound naming", "Acid-base reactions", "Redox reactions"],
+        why: "Inorganic chemistry concepts appear frequently in both exams and applied lab work."
+    },
+    "chm-171": {
+        code: "CHM 171",
+        title: "Basic Practical Chemistry",
+        subject: "chm",
+        subjectLabel: "Chemistry",
+        description: "Lab safety, titration, and basic experimental techniques.",
+        questions: 15,
+        minutes: 20,
+        topics: ["Lab safety", "Titration techniques", "Measurement and accuracy", "Basic experimental design"],
+        why: "Practical chemistry skills are tested heavily in lab-based assessments and continuous assessment scores."
+    },
+    "cos-101": {
+        code: "COS 101",
+        title: "Introduction to Computer Science",
+        subject: "cos",
+        subjectLabel: "Computer Science",
+        description: "Computing fundamentals, algorithms, and basic programming logic.",
+        questions: 20,
+        minutes: 25,
+        topics: ["Computing fundamentals", "Algorithms and flowcharts", "Basic programming logic", "Data representation"],
+        why: "This course sets the foundation for every other computer science course you'll encounter."
+    },
+    "cos-141": {
+        code: "COS 141",
+        title: "COS 141",
+        subject: "cos",
+        subjectLabel: "Computer Science",
+        description: "Introductory programming and computational thinking.",
+        questions: 18,
+        minutes: 25,
+        topics: ["Programming basics", "Control structures", "Functions", "Problem-solving patterns"],
+        why: "Strong computational thinking skills are essential as course difficulty increases."
+    },
+    "gsp-111": {
+        code: "GSP 111",
+        title: "Communication in English Language I",
+        subject: "gsp",
+        subjectLabel: "GSP / GST",
+        description: "Grammar, comprehension, and academic writing basics.",
+        questions: 20,
+        minutes: 25,
+        topics: ["Grammar rules", "Reading comprehension", "Academic writing structure", "Vocabulary building"],
+        why: "Strong communication skills support performance across every other course."
+    },
+    "gsp-201": {
+        code: "GSP 201",
+        title: "Peace and Conflict Studies I",
+        subject: "gsp",
+        subjectLabel: "GSP / GST",
+        description: "Conflict resolution theory and peacebuilding fundamentals.",
+        questions: 15,
+        minutes: 20,
+        topics: ["Conflict theory", "Peacebuilding strategies", "Case studies", "Negotiation basics"],
+        why: "This GSP course broadens critical thinking and is commonly assessed via theory-based questions."
+    },
+    "gst-111": {
+        code: "GST 111",
+        title: "Communication in English",
+        subject: "gsp",
+        subjectLabel: "GSP / GST",
+        description: "Core English communication skills for university study.",
+        questions: 20,
+        minutes: 25,
+        topics: ["Sentence construction", "Tenses", "Comprehension passages", "Essay writing basics"],
+        why: "A required general course that's foundational to written exams across departments."
+    },
+    "mth-101-111": {
+        code: "MTH 101/111",
+        title: "Elementary Mathematics I",
+        subject: "mth",
+        subjectLabel: "Mathematics",
+        description: "Algebra, functions, and foundational mathematical concepts.",
+        questions: 20,
+        minutes: 30,
+        topics: ["Algebraic expressions", "Functions and graphs", "Quadratic equations", "Inequalities"],
+        why: "Elementary Mathematics I is a prerequisite for almost every quantitative course at university level."
+    },
+    "mth-103-121": {
+        code: "MTH 103/121",
+        title: "Elementary Mathematics II",
+        subject: "mth",
+        subjectLabel: "Mathematics",
+        description: "Trigonometry, sequences, and introductory calculus.",
+        questions: 20,
+        minutes: 30,
+        topics: ["Trigonometric identities", "Sequences and series", "Limits", "Basic differentiation"],
+        why: "Builds directly on Elementary Mathematics I and introduces calculus concepts used later."
+    },
+    "mth-113": {
+        code: "MTH 113",
+        title: "Intermediate Mathematics",
+        subject: "mth",
+        subjectLabel: "Mathematics",
+        description: "Matrices, vectors, and intermediate-level problem solving.",
+        questions: 18,
+        minutes: 25,
+        topics: ["Matrices and determinants", "Vector algebra", "Coordinate geometry", "Problem-solving techniques"],
+        why: "These topics frequently appear in engineering and science course assessments."
+    },
+    "phy-101": {
+        code: "PHY 101",
+        title: "General Physics I: Mechanics; Properties of Matter",
+        subject: "phy",
+        subjectLabel: "Physics",
+        description: "Motion, forces, and the physical properties of matter.",
+        questions: 20,
+        minutes: 30,
+        topics: ["Kinematics", "Newton's laws", "Properties of matter", "Energy and work"],
+        why: "Mechanics is the foundation of all further physics study and appears in nearly every physics exam."
+    },
+    "phy-107": {
+        code: "PHY 107",
+        title: "General Practical Physics",
+        subject: "phy",
+        subjectLabel: "Physics",
+        description: "Hands-on lab experiments and measurement techniques.",
+        questions: 15,
+        minutes: 20,
+        topics: ["Measurement and error analysis", "Basic experiments", "Data recording", "Graph interpretation"],
+        why: "Practical assessments test your ability to apply theory in real experimental settings."
+    },
+    "phy-111": {
+        code: "PHY 111",
+        title: "General Physics for Life Sciences",
+        subject: "phy",
+        subjectLabel: "Physics",
+        description: "Physics principles applied to biological and life science contexts.",
+        questions: 18,
+        minutes: 25,
+        topics: ["Fluid mechanics in biology", "Thermodynamics basics", "Optics in biological systems", "Electricity fundamentals"],
+        why: "Tailored physics concepts for life science students who need applied, not purely theoretical, understanding."
+    },
+    "sta-111": {
+        code: "STA 111",
+        title: "Descriptive Statistics",
+        subject: "sta",
+        subjectLabel: "Statistics",
+        description: "Data summarization, measures of central tendency, and dispersion.",
+        questions: 18,
+        minutes: 25,
+        topics: ["Mean, median, mode", "Measures of dispersion", "Data presentation", "Frequency distributions"],
+        why: "Descriptive statistics is a prerequisite skill for almost every research-based course."
+    },
+    "sta-113": {
+        code: "STA 113",
+        title: "Probability I",
+        subject: "sta",
+        subjectLabel: "Statistics",
+        description: "Basic probability theory, distributions, and counting principles.",
+        questions: 18,
+        minutes: 25,
+        topics: ["Probability rules", "Counting principles", "Discrete distributions", "Conditional probability"],
+        why: "Probability theory underpins statistical inference used throughout science and social science courses."
+    }
+};

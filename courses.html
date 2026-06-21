@@ -45,6 +45,180 @@
         </div>
     </header>
 
+    <main class="assessment-main">
+        <section class="assessment-hero">
+            <h1>Browse courses</h1>
+            <p>Explore courses across subjects and start practicing today.</p>
+        </section>
+
+        <section class="assessment-controls">
+            <div class="search-bar">
+                <input type="text" id="assessmentSearch" placeholder="Search by course code or title..." onkeyup="filterAssessments()">
+            </div>
+            <div class="filter-tabs" id="filterTabs">
+                <button class="filter-tab active" data-subject="all" onclick="setSubjectFilter(this)">All</button>
+                <button class="filter-tab" data-subject="bio" onclick="setSubjectFilter(this)">Biology</button>
+                <button class="filter-tab" data-subject="chm" onclick="setSubjectFilter(this)">Chemistry</button>
+                <button class="filter-tab" data-subject="cos" onclick="setSubjectFilter(this)">Computer Science</button>
+                <button class="filter-tab" data-subject="gsp" onclick="setSubjectFilter(this)">GSP / GST</button>
+                <button class="filter-tab" data-subject="mth" onclick="setSubjectFilter(this)">Mathematics</button>
+                <button class="filter-tab" data-subject="phy" onclick="setSubjectFilter(this)">Physics</button>
+                <button class="filter-tab" data-subject="sta" onclick="setSubjectFilter(this)">Statistics</button>
+            </div>
+        </section>
+
+        <section class="assessment-grid" id="assessmentGrid">
+
+            <div class="card assessment-card" data-subject="bio" data-title="bio 103 introduction to genetics for medical students">
+                <span class="subject-badge subject-bio">BIO 103</span>
+                <h3>Introduction to Genetics for Medical Students</h3>
+                <p>Core genetics concepts for medical and life science students.</p>
+                <button class="primary-btn" onclick="viewCourse('bio-103')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="bio" data-title="bio 107 general practical biology i">
+                <span class="subject-badge subject-bio">BIO 107</span>
+                <h3>General Practical Biology I</h3>
+                <p>Lab techniques and practical biology fundamentals.</p>
+                <button class="primary-btn" onclick="viewCourse('bio-107')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="bio" data-title="bio 151 general biology">
+                <span class="subject-badge subject-bio">BIO 151</span>
+                <h3>General Biology</h3>
+                <p>Foundational biology concepts across cell, plant, and animal systems.</p>
+                <button class="primary-btn" onclick="viewCourse('bio-151')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="chm" data-title="chm 101 principles of chemistry">
+                <span class="subject-badge subject-chm">CHM 101</span>
+                <h3>Principles of Chemistry</h3>
+                <p>Atomic structure, bonding, and basic chemical reactions.</p>
+                <button class="primary-btn" onclick="viewCourse('chm-101')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="chm" data-title="chm 107 principles of inorganic chemistry">
+                <span class="subject-badge subject-chm">CHM 107</span>
+                <h3>Principles of Inorganic Chemistry</h3>
+                <p>Periodic trends, inorganic compounds, and reaction types.</p>
+                <button class="primary-btn" onclick="viewCourse('chm-107')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="chm" data-title="chm 171 basic practical chemistry">
+                <span class="subject-badge subject-chm">CHM 171</span>
+                <h3>Basic Practical Chemistry</h3>
+                <p>Lab safety, titration, and basic experimental techniques.</p>
+                <button class="primary-btn" onclick="viewCourse('chm-171')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="cos" data-title="cos 101 introduction to computer science">
+                <span class="subject-badge subject-cos">COS 101</span>
+                <h3>Introduction to Computer Science</h3>
+                <p>Computing fundamentals, algorithms, and basic programming logic.</p>
+                <button class="primary-btn" onclick="viewCourse('cos-101')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="cos" data-title="cos 141">
+                <span class="subject-badge subject-cos">COS 141</span>
+                <h3>COS 141</h3>
+                <p>Introductory programming and computational thinking.</p>
+                <button class="primary-btn" onclick="viewCourse('cos-141')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="gsp" data-title="gsp 111 communication in english language i">
+                <span class="subject-badge subject-gsp">GSP 111</span>
+                <h3>Communication in English Language I</h3>
+                <p>Grammar, comprehension, and academic writing basics.</p>
+                <button class="primary-btn" onclick="viewCourse('gsp-111')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="gsp" data-title="gsp 201 peace and conflict studies i">
+                <span class="subject-badge subject-gsp">GSP 201</span>
+                <h3>Peace and Conflict Studies I</h3>
+                <p>Conflict resolution theory and peacebuilding fundamentals.</p>
+                <button class="primary-btn" onclick="viewCourse('gsp-201')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="gsp" data-title="gst 111 communication in english">
+                <span class="subject-badge subject-gsp">GST 111</span>
+                <h3>Communication in English</h3>
+                <p>Core English communication skills for university study.</p>
+                <button class="primary-btn" onclick="viewCourse('gst-111')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="mth" data-title="mth 101 111 elementary mathematics i">
+                <span class="subject-badge subject-mth">MTH 101/111</span>
+                <h3>Elementary Mathematics I</h3>
+                <p>Algebra, functions, and foundational mathematical concepts.</p>
+                <button class="primary-btn" onclick="viewCourse('mth-101-111')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="mth" data-title="mth 103 121 elementary mathematics ii">
+                <span class="subject-badge subject-mth">MTH 103/121</span>
+                <h3>Elementary Mathematics II</h3>
+                <p>Trigonometry, sequences, and introductory calculus.</p>
+                <button class="primary-btn" onclick="viewCourse('mth-103-121')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="mth" data-title="mth 113 intermediate mathematics">
+                <span class="subject-badge subject-mth">MTH 113</span>
+                <h3>Intermediate Mathematics</h3>
+                <p>Matrices, vectors, and intermediate-level problem solving.</p>
+                <button class="primary-btn" onclick="viewCourse('mth-113')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="phy" data-title="phy 101 general physics i mechanics properties of matter">
+                <span class="subject-badge subject-phy">PHY 101</span>
+                <h3>General Physics I: Mechanics; Properties of Matter</h3>
+                <p>Motion, forces, and the physical properties of matter.</p>
+                <button class="primary-btn" onclick="viewCourse('phy-101')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="phy" data-title="phy 107 general practical physics">
+                <span class="subject-badge subject-phy">PHY 107</span>
+                <h3>General Practical Physics</h3>
+                <p>Hands-on lab experiments and measurement techniques.</p>
+                <button class="primary-btn" onclick="viewCourse('phy-107')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="phy" data-title="phy 111 general physics for life sciences">
+                <span class="subject-badge subject-phy">PHY 111</span>
+                <h3>General Physics for Life Sciences</h3>
+                <p>Physics principles applied to biological and life science contexts.</p>
+                <button class="primary-btn" onclick="viewCourse('phy-111')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="sta" data-title="sta 111 descriptive statistics">
+                <span class="subject-badge subject-sta">STA 111</span>
+                <h3>Descriptive Statistics</h3>
+                <p>Data summarization, measures of central tendency, and dispersion.</p>
+                <button class="primary-btn" onclick="viewCourse('sta-111')">View course</button>
+            </div>
+
+            <div class="card assessment-card" data-subject="sta" data-title="sta 113 probability i">
+                <span class="subject-badge subject-sta">STA 113</span>
+                <h3>Probability I</h3>
+                <p>Basic probability theory, distributions, and counting principles.</p>
+                <button class="primary-btn" onclick="viewCourse('sta-113')">View course</button>
+            </div>
+
+        </section>
+
+        <p class="no-results" id="noResults" style="display:none;">No courses match your search.</p>
+</main>
+
+
+
+
+     <footer>
+      <p>&COPY; 2026 DeeEx. All rights reserved.</p>
+        <div class="footerlinks">
+            <a href="#">About</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Contact us</a>
+        </div>   
+    </footer>
+
     <script src="main.js"></script>
 </body>
 </html>

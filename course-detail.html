@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="University reading/exam simulation, DeeEx">
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <title>DeeEx - Course Details</title>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>DeeEx</h1>
+            </div>
+            <div class="nav-wrapper">
+                <nav class="main-bar">
+                    <ul class="nav-ul">
+                        <li class="nav-item"><a href="index.html" class="nav-link">Home</a></li>
+                        <li class="nav-item"><a href="courses.html" class="nav-link active">Courses</a></li>
+                        <li class="nav-item"><a href="assessment.html" class="nav-link">Assesssment</a></li>
+                        <li class="nav-item"><a href="institution.html" class="nav-link">Institution</a></li>
+                        <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                        <li class="nav-item mobile-auth-item"><a href="login.html" class="nav-link">Login</a></li>
+                        <li class="nav-item mobile-auth-item"><button onclick="goToSignup()" class="mobile-signup">Sign Up</button></li>
+                    </ul>
+                    <div class="nav-auth">
+                        <a href="login.html">Login</a>
+                        <button onclick="goToSignup()" class="primary-btn">Sign Up</button>
+                    </div>
+                    <div class="hamburger">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="course-detail-main">
+        <a href="courses.html" class="back-link">&larr; Back to courses</a>
+
+        <section class="course-detail-header card">
+            <span class="subject-badge" id="courseSubjectBadge"></span>
+            <h1 id="courseTitle">Loading course...</h1>
+            <p id="courseDescription"></p>
+            <div class="course-detail-meta" id="courseMeta"></div>
+            <button class="primary-btn" id="courseCta" onclick="">Start assessment</button>
+        </section>
+
+        <section class="course-detail-body">
+            <div class="card">
+                <h2>What you'll be tested on</h2>
+                <ul id="courseTopics"></ul>
+            </div>
+            <div class="card">
+                <h2>Why practice this course</h2>
+                <p id="courseWhy"></p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 DeeEx. All rights reserved.</p>
+        <div class="footerlinks">
+            <a href="#">About</a>
+            <a href="#">Privacy policy</a>
+            <a href="contact.html">Contact us</a>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script src="course-data.js"></script>
+    <script src="course-detail.js"></script>
+</body>
+</html>

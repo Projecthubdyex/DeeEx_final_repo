@@ -354,3 +354,7 @@ function filterAssessments() {
 function startAssessment(assessmentId) {
     window.location.href = `signup.html?assessment=${assessmentId}`;
 }
+
+function viewCourse(courseId) {
+    window.location.href = `course-detail.html?id=${courseId}`;
+}
