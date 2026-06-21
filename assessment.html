@@ -25,6 +25,8 @@
                         <li class="nav-item"><a href="#" class="nav-link active">Assesssment</a></li>
                         <li class="nav-item"><a href="institution.html" class="nav-link">Institution</a></li>
                         <li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+                        <li class="nav-item mobile-auth-item"><a href="login.html" class="nav-link">Login</a></li>
+                        <li class="nav-item mobile-auth-item"><button onclick="goToSignup()" class="mobile-signup">Sign Up</button></li>
                     </ul>
                     <div class="nav-auth">
                         <a href="login.html">Login</a>
@@ -42,7 +44,197 @@
 
         </div>
     </header>
+    <main class="assessment-main">
+    <section class="assessment-hero">
+        <h1>Practice assessments</h1>
+        <p>Find and take assessments tailored to your course and level.</p>
+    </section>
+
+    <section class="assessment-controls">
+        <div class="search-bar">
+            <input type="text" id="assessmentSearch" placeholder="Search by course code or title..." onkeyup="filterAssessments()">
+        </div>
+        <div class="filter-tabs" id="filterTabs">
+            <button class="filter-tab active" data-subject="all" onclick="setSubjectFilter(this)">All</button>
+            <button class="filter-tab" data-subject="bio" onclick="setSubjectFilter(this)">Biology</button>
+            <button class="filter-tab" data-subject="chm" onclick="setSubjectFilter(this)">Chemistry</button>
+            <button class="filter-tab" data-subject="cos" onclick="setSubjectFilter(this)">Computer Science</button>
+            <button class="filter-tab" data-subject="gsp" onclick="setSubjectFilter(this)">GSP / GST</button>
+            <button class="filter-tab" data-subject="mth" onclick="setSubjectFilter(this)">Mathematics</button>
+            <button class="filter-tab" data-subject="phy" onclick="setSubjectFilter(this)">Physics</button>
+            <button class="filter-tab" data-subject="sta" onclick="setSubjectFilter(this)">Statistics</button>
+        </div>
+    </section>
+
+    <section class="assessment-grid" id="assessmentGrid">
+
+        <div class="card assessment-card" data-subject="bio" data-title="bio 103 introduction to genetics for medical students">
+            <span class="subject-badge subject-bio">BIO 103</span>
+            <h3>Introduction to Genetics for Medical Students</h3>
+            <p>Core genetics concepts for medical and life science students.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>30 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('bio-103')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="bio" data-title="bio 107 general practical biology i">
+            <span class="subject-badge subject-bio">BIO 107</span>
+            <h3>General Practical Biology I</h3>
+            <p>Lab techniques and practical biology fundamentals.</p>
+            <div class="assessment-meta"><span>15 questions</span><span>20 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('bio-107')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="bio" data-title="bio 151 general biology">
+            <span class="subject-badge subject-bio">BIO 151</span>
+            <h3>General Biology</h3>
+            <p>Foundational biology concepts across cell, plant, and animal systems.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>28 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('bio-151')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="chm" data-title="chm 101 principles of chemistry">
+            <span class="subject-badge subject-chm">CHM 101</span>
+            <h3>Principles of Chemistry</h3>
+            <p>Atomic structure, bonding, and basic chemical reactions.</p>
+            <div class="assessment-meta"><span>18 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('chm-101')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="chm" data-title="chm 107 principles of inorganic chemistry">
+            <span class="subject-badge subject-chm">CHM 107</span>
+            <h3>Principles of Inorganic Chemistry</h3>
+            <p>Periodic trends, inorganic compounds, and reaction types.</p>
+            <div class="assessment-meta"><span>18 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('chm-107')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="chm" data-title="chm 171 basic practical chemistry">
+            <span class="subject-badge subject-chm">CHM 171</span>
+            <h3>Basic Practical Chemistry</h3>
+            <p>Lab safety, titration, and basic experimental techniques.</p>
+            <div class="assessment-meta"><span>15 questions</span><span>20 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('chm-171')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="cos" data-title="cos 101 introduction to computer science">
+            <span class="subject-badge subject-cos">COS 101</span>
+            <h3>Introduction to Computer Science</h3>
+            <p>Computing fundamentals, algorithms, and basic programming logic.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('cos-101')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="cos" data-title="cos 141">
+            <span class="subject-badge subject-cos">COS 141</span>
+            <h3>COS 141</h3>
+            <p>Introductory programming and computational thinking.</p>
+            <div class="assessment-meta"><span>18 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('cos-141')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="gsp" data-title="gsp 111 communication in english language i">
+            <span class="subject-badge subject-gsp">GSP 111</span>
+            <h3>Communication in English Language I</h3>
+            <p>Grammar, comprehension, and academic writing basics.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('gsp-111')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="gsp" data-title="gsp 201 peace and conflict studies i">
+            <span class="subject-badge subject-gsp">GSP 201</span>
+            <h3>Peace and Conflict Studies I</h3>
+            <p>Conflict resolution theory and peacebuilding fundamentals.</p>
+            <div class="assessment-meta"><span>15 questions</span><span>20 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('gsp-201')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="gsp" data-title="gst 111 communication in english">
+            <span class="subject-badge subject-gsp">GST 111</span>
+            <h3>Communication in English</h3>
+            <p>Core English communication skills for university study.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('gst-111')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="mth" data-title="mth 101 111 elementary mathematics i">
+            <span class="subject-badge subject-mth">MTH 101/111</span>
+            <h3>Elementary Mathematics I</h3>
+            <p>Algebra, functions, and foundational mathematical concepts.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>30 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('mth-101-111')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="mth" data-title="mth 103 121 elementary mathematics ii">
+            <span class="subject-badge subject-mth">MTH 103/121</span>
+            <h3>Elementary Mathematics II</h3>
+            <p>Trigonometry, sequences, and introductory calculus.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>30 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('mth-103-121')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="mth" data-title="mth 113 intermediate mathematics">
+            <span class="subject-badge subject-mth">MTH 113</span>
+            <h3>Intermediate Mathematics</h3>
+            <p>Matrices, vectors, and intermediate-level problem solving.</p>
+            <div class="assessment-meta"><span>18 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('mth-113')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="phy" data-title="phy 101 general physics i mechanics properties of matter">
+            <span class="subject-badge subject-phy">PHY 101</span>
+            <h3>General Physics I: Mechanics; Properties of Matter</h3>
+            <p>Motion, forces, and the physical properties of matter.</p>
+            <div class="assessment-meta"><span>20 questions</span><span>30 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('phy-101')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="phy" data-title="phy 107 general practical physics">
+            <span class="subject-badge subject-phy">PHY 107</span>
+            <h3>General Practical Physics</h3>
+            <p>Hands-on lab experiments and measurement techniques.</p>
+            <div class="assessment-meta"><span>15 questions</span><span>20 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('phy-107')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="phy" data-title="phy 111 general physics for life sciences">
+            <span class="subject-badge subject-phy">PHY 111</span>
+            <h3>General Physics for Life Sciences</h3>
+            <p>Physics principles applied to biological and life science contexts.</p>
+            <div class="assessment-meta"><span>18 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('phy-111')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="sta" data-title="sta 111 descriptive statistics">
+            <span class="subject-badge subject-sta">STA 111</span>
+            <h3>Descriptive Statistics</h3>
+            <p>Data summarization, measures of central tendency, and dispersion.</p>
+            <div class="assessment-meta"><span>18 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('sta-111')">Start assessment</button>
+        </div>
+
+        <div class="card assessment-card" data-subject="sta" data-title="sta 113 probability i">
+            <span class="subject-badge subject-sta">STA 113</span>
+            <h3>Probability I</h3>
+            <p>Basic probability theory, distributions, and counting principles.</p>
+            <div class="assessment-meta"><span>18 questions</span><span>25 mins</span></div>
+            <button class="primary-btn" onclick="startAssessment('sta-113')">Start assessment</button>
+        </div>
+
+    </section>
+
+    <p class="no-results" id="noResults" style="display:none;">No assessments match your search.</p>
+</main>
+
+<footer>
+      <p>&COPY; 2026 DeeEx. All rights reserved.</p>
+        <div class="footerlinks">
+            <a href="#">About</a>
+            <a href="#">Privacy policy</a>
+            <a href="#">Contact us</a>
+        </div>   
+    </footer>
 
     <script src="main.js"></script>
 </body>
 </html>
+

@@ -59,6 +59,7 @@ body{
 header{
     background-color: #c5dbf7;
     width: 95%;
+    max-width: 1200px;
     top: 23px;
     left: 50%;
     transform: translateX(-50%);
@@ -139,9 +140,18 @@ a{
     font-size: 14px;
     cursor: pointer;
 }
+.mobile-auth-item {
+    display: none;
+}
+.nav-wrapper {
+    flex: 1;
+    display: flex;
+}
+
 @media(max-width:1024px){
     .hamburger{
         display: block;
+        margin-left: auto;
     }
 
     .hamburger.active .bar:nth-child(2){
@@ -180,7 +190,24 @@ a{
         transform: translateX(0);
     }
     .nav-auth{
-        margin-left: 30px;
+        display: none;
+    }
+    .mobile-auth-item {
+        display: block;
+        margin-top: 8px;
+    }
+    .mobile-signup {
+        background: #006DF2;
+        color: white;
+        border: none;
+        border-radius: 50px;
+        padding: 8px 24px;
+        font-size: 15px;
+        cursor: pointer;
+    }
+    .main-bar {
+        width: 100%;
+        justify-content: space-between;
     }
     
 }
@@ -896,4 +923,374 @@ footer a:visited{
 .modal-stats span {
     font-size: 11px;
     color: #4B5563;
+}
+
+/* ── Contact page ── */
+.contact-main {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+}
+
+.contact-hero {
+    text-align: center;
+    padding: 40px 0 32px;
+}
+
+.contact-hero h1 {
+    color: #1a4fa8;
+    font-size: clamp(24px, 4vw, 34px);
+    margin: 0 0 8px;
+}
+
+.contact-hero p {
+    color: #2a2a2a;
+    font-size: 16px;
+    margin: 0;
+}
+
+.contact-content {
+    display: grid;
+    grid-template-columns: 1fr 1.4fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #b9d6f9;
+    border-radius: 16px;
+    padding: 24px;
+}
+
+.contact-info-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.info-card {
+    text-align: left;
+}
+
+.info-card h3 {
+    color: #1a4fa8;
+    font-size: 16px;
+    margin: 0 0 4px;
+}
+
+.info-card p,
+.info-card a {
+    color: #2a2a2a;
+    font-size: 14px;
+    margin: 0;
+}
+
+.contact-form-wrapper h2 {
+    color: #1a4fa8;
+    font-size: 18px;
+    margin: 0 0 16px;
+}
+
+.contact-form-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-form-wrapper label {
+    font-size: 13px;
+    color: #2a2a2a;
+    margin-top: 10px;
+}
+
+.contact-form-wrapper input,
+.contact-form-wrapper textarea {
+    box-sizing: border-box;
+    border: 1px solid #b9d6f9;
+    border-radius: 10px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    width: 100%;
+}
+
+.contact-form-wrapper input:focus,
+.contact-form-wrapper textarea:focus {
+    outline: none;
+    border-color: #006DF2;
+}
+
+.contact-form-wrapper .primary-btn {
+    margin-top: 16px;
+    align-self: flex-start;
+    background: #006DF2;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 28px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.contact-form-wrapper .primary-btn:hover {
+    background: #0055c4;
+}
+
+.faq-section {
+    margin-top: 56px;
+}
+
+.faq-section h2 {
+    text-align: center;
+    color: #1a4fa8;
+    font-size: 22px;
+    margin-bottom: 24px;
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #b9d6f9;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 500;
+    color: #1a1a1a;
+    padding: 16px 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-toggle {
+    font-size: 20px;
+    font-weight: 400;
+    color: #006DF2;
+    transition: transform 0.25s ease;
+    line-height: 1;
+}
+
+.faq-item.active .faq-toggle {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s ease;
+    padding: 0 20px;
+}
+
+.faq-item.active .faq-answer {
+    max-height: 200px;
+    padding-bottom: 16px;
+}
+
+.faq-answer p {
+    margin: 0;
+    color: #2a2a2a;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+    .contact-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.assessment-main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+}
+
+.assessment-hero {
+    text-align: center;
+    padding: 40px 0 28px;
+}
+
+.assessment-hero h1 {
+    color: #1a4fa8;
+    font-size: clamp(24px, 4vw, 34px);
+    margin: 0 0 8px;
+}
+
+.assessment-hero p {
+    color: #2a2a2a;
+    font-size: 16px;
+    margin: 0;
+}
+
+.assessment-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+}
+
+.search-bar input {
+    width: 100%;
+    box-sizing: border-box;
+    border: 1px solid #b9d6f9;
+    border-radius: 50px;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: #006DF2;
+}
+
+.filter-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.filter-tab {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid #b9d6f9;
+    border-radius: 50px;
+    padding: 8px 18px;
+    font-size: 13px;
+    color: #2a2a2a;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.filter-tab:hover {
+    border-color: #006DF2;
+}
+
+.filter-tab.active {
+    background: #006DF2;
+    color: white;
+    border-color: #006DF2;
+}
+
+.assessment-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+}
+
+.assessment-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.subject-badge {
+    align-self: flex-start;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 12px;
+}
+
+.subject-bio {
+    background: #eaf3de;
+    color: #27500a;
+}
+
+.subject-chm {
+    background: #faece7;
+    color: #712b13;
+}
+
+.subject-cos {
+    background: #e6f1fb;
+    color: #0c447c;
+}
+
+.subject-gsp {
+    background: #fbeaf0;
+    color: #72243e;
+}
+
+.subject-mth {
+    background: #eeedfe;
+    color: #3c3489;
+}
+
+.subject-phy {
+    background: #faeeda;
+    color: #633806;
+}
+
+.subject-sta {
+    background: #e1f5ee;
+    color: #085041;
+}
+
+.assessment-card h3 {
+    color: #1a1a1a;
+    font-size: 17px;
+    margin: 0 0 8px;
+}
+
+.assessment-card p {
+    color: #2a2a2a;
+    font-size: 14px;
+    margin: 0 0 16px;
+    flex-grow: 1;
+}
+
+.assessment-meta {
+    display: flex;
+    gap: 16px;
+    font-size: 13px;
+    color: #5a5a5a;
+    margin-bottom: 16px;
+}
+
+.assessment-card .primary-btn {
+    background: #006DF2;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 10px 20px;
+    font-size: 14px;
+    cursor: pointer;
+    align-self: flex-start;
+}
+
+.assessment-card .primary-btn:hover {
+    background: #0055c4;
+}
+
+.no-results {
+    text-align: center;
+    color: #5a5a5a;
+    font-size: 15px;
+    margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+    .filter-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 4px;
+    }
+
+    .filter-tab {
+        flex-shrink: 0;
+    }
 }

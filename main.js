@@ -294,3 +294,63 @@ document.addEventListener('DOMContentLoaded', function() {
     loadUniversities();
     animateCounters();
 });
+
+function toggleFaq(button) {
+    const item = button.closest(".faq-item");
+    const wasActive = item.classList.contains("active");
+
+    document.querySelectorAll(".faq-item.active").forEach(el => el.classList.remove("active"));
+
+    if (!wasActive) {
+        item.classList.add("active");
+    }
+}
+
+
+
+async function sendContactEmail() {
+     const name = document.getElementById('contactName').value;
+     const email = document.getElementById('contactEmail').value;
+     const message = document.getElementById('contactMessage').value;
+
+   await fetch('https://formspree.io/f/xpqenbpn', {
+        method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name, email: email, message: message })
+     });
+
+     alert("Thanks for reaching out! We'll get back to you soon.");
+ }
+
+ let currentSubjectFilter = 'all';
+
+function setSubjectFilter(button) {
+    document.querySelectorAll('.filter-tab').forEach(tab => tab.classList.remove('active'));
+    button.classList.add('active');
+    currentSubjectFilter = button.dataset.subject;
+    filterAssessments();
+}
+
+function filterAssessments() {
+    const searchValue = document.getElementById('assessmentSearch').value.toLowerCase().trim();
+    const cards = document.querySelectorAll('.assessment-card');
+    let visibleCount = 0;
+
+    cards.forEach(card => {
+        const matchesSubject = currentSubjectFilter === 'all' || card.dataset.subject === currentSubjectFilter;
+        const matchesSearch = card.dataset.title.includes(searchValue);
+
+        if (matchesSubject && matchesSearch) {
+            card.style.display = '';
+            visibleCount++;
+        } else {
+            card.style.display = 'none';
+        }
+    });
+
+    document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+}
+
+function startAssessment(assessmentId) {
+    window.location.href = `signup.html?assessment=${assessmentId}`;
+}
