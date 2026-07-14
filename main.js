@@ -2,19 +2,19 @@
 // HAMBURGER MENU (home/navbar pages only)
 // ============================
 
-const harmburger = document.querySelector(".hamburger");
+const hamburger = document.querySelector(".hamburger");
 const navUl = document.querySelector(".nav-ul");
 const navAuth = document.querySelector(".nav-auth");
 
-if (harmburger) {
-    harmburger.addEventListener("click", () => {
-        harmburger.classList.toggle("active");
+if (hamburger) {
+    hamburger.addEventListener("click", () => {
+        hamburger.classList.toggle("active");
         navUl.classList.toggle("active");
         navAuth.classList.toggle("active");
     });
 
     document.querySelectorAll(".nav-link").forEach(n => n.addEventListener("click", () => {
-        harmburger.classList.remove("active");
+        hamburger.classList.remove("active");
         navUl.classList.remove("active");
         navAuth.classList.remove("active");
     }));
@@ -56,43 +56,78 @@ async function sendEmail() {
 // LOGIN PAGE FUNCTIONALITY
 // ============================
 
-document.addEventListener('DOMContentLoaded', function() {
-
-    const loginForm = document.getElementById('loginForm');
-
-    if (loginForm) {
-        loginForm.addEventListener('submit', function(event) {
-
-            event.preventDefault();
-
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-
-            if (email === '' || password === '') {
-                alert('Please fill in both email and password.');
-                return;
-            }
-
-            console.log('Login attempt:', { email: email, password: password });
-
-            window.location.href = 'dashboard.html';
-        });
-    }
-
-});
+const loginForm = document.getElementById('loginForm');
+ if (loginForm) {
+     loginForm.addEventListener('submit', async (e) => {
+         e.preventDefault();
+         const email = document.getElementById('email').value.trim();
+         const password = document.getElementById('password').value;
+         const btn = loginForm.querySelector('button[type="submit"]');
+         btn.textContent = 'Logging in...';
+         btn.disabled = true;
+         const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+         if (error) { alert(error.message); btn.textContent = 'Login'; btn.disabled = false; return; }
+         sessionStorage.removeItem('splashShown');
+         window.location.href = 'splash.html';
+     });
+ }
 
 // ============================
 // SOCIAL LOGIN PLACEHOLDERS
 // ============================
 
-function loginWithGoogle() {
-    window.location.href = 'dashboard.html';
+async function loginWithGoogle() {
+     const { error } = await supabaseClient.auth.signInWithOAuth({
+         provider: 'google',
+         options: { redirectTo: window.location.origin + '/splash.html' }
+     });
+     if (error) alert(error.message);
+ }
+
+
+// ========================
+// signup form handler
+//=========================
+
+
+ const signupForm = document.getElementById('signupForm');
+if (signupForm) {
+    signupForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const fullname = document.getElementById('fullname').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const university = document.getElementById('university').value.trim();
+        const faculty = document.getElementById('faculty').value;
+        const department = document.getElementById('department').value;
+        const level = document.getElementById('level').value;
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) { alert('Passwords do not match.'); return; }
+        if (!faculty || !department) { alert('Please select your faculty and department.'); return; }
+
+        const btn = signupForm.querySelector('button[type="submit"]');
+        btn.textContent = 'Creating account...';
+        btn.disabled = true;
+
+        const { error } = await supabaseClient.auth.signUp({
+            email, password,
+            options: { data: { full_name: fullname, university, faculty, department, level } }
+        });
+
+        if (error) { alert(error.message); btn.textContent = 'Create account'; btn.disabled = false; return; }
+        sessionStorage.removeItem('splashShown');
+        window.location.href = 'splash.html';
+    });
 }
 
-function loginWithApple() {
-    window.location.href = 'dashboard.html';
+async function signupWithGoogle() {
+    const { error } = await supabaseClient.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: window.location.origin + '/splash.html' }
+    });
+    if (error) alert(error.message);
 }
-
 // ============================
 // FACULTY & DEPARTMENT DATA
 // ============================
@@ -357,4 +392,16 @@ function startAssessment(assessmentId) {
 
 function viewCourse(courseId) {
     window.location.href = `course-detail.html?id=${courseId}`;
+}
+
+
+async function requireAuth() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) window.location.href = 'login.html';
+    return session;
+}
+
+async function logout() {
+    await supabaseClient.auth.signOut();
+    window.location.href = 'login.html';
 }
