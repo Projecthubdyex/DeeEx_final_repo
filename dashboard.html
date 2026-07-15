@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/@tabler/icons-webfont/3.31.0/tabler-icons.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx</div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-link-item active">
+            <i class="ti ti-layout-dashboard"></i> Dashboard
+        </a>
+        <a href="courses.html" class="nav-link-item">
+            <i class="ti ti-books"></i> My courses
+        </a>
+        <a href="assessment.html" class="nav-link-item">
+            <i class="ti ti-clipboard-check"></i> Assessments
+        </a>
+        <a href="progress.html" class="nav-link-item">
+            <i class="ti ti-chart-line"></i> Progress
+        </a>
+        <a href="leaderboard.html" class="nav-link-item">
+            <i class="ti ti-trophy"></i> Leaderboard
+        </a>
+        <a href="settings.html" class="nav-link-item">
+            <i class="ti ti-settings"></i> Settings
+        </a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="sidebarAvatar">?</div>
+            <div class="user-info">
+                <p id="sidebarName">Loading...</p>
+                <span id="sidebarDept">—</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">
+            <i class="ti ti-logout"></i> Log out
+        </button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+
+    <div class="topbar">
+        <div class="topbar-left">
+            <p class="meta" id="topMeta">Loading...</p>
+            <h1 id="topGreeting">Welcome back!</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">
+                <i class="ti ti-menu-2"></i>
+            </div>
+            <div class="icon-btn"><i class="ti ti-bell"></i></div>
+            <div class="icon-btn"><i class="ti ti-user"></i></div>
+        </div>
+    </div>
+
+    <div class="section-label">Overview</div>
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="s-label">Assessments taken</div>
+            <div class="s-value" id="statAssessments">—</div>
+            <div class="s-sub">Total sessions</div>
+        </div>
+        <div class="stat-card">
+            <div class="s-label">Average score</div>
+            <div class="s-value" id="statAvgScore">—</div>
+            <div class="s-sub">Across all courses</div>
+        </div>
+        <div class="stat-card">
+            <div class="s-label">Active courses</div>
+            <div class="s-value" id="statCourses">—</div>
+            <div class="s-sub">This semester</div>
+        </div>
+        <div class="stat-card">
+            <div class="s-label">Best score</div>
+            <div class="s-value" id="statBest">—</div>
+            <div class="s-sub">Personal best</div>
+        </div>
+    </div>
+
+    <div class="two-col">
+        <div class="dash-card">
+            <h3>Active courses</h3>
+            <div id="courseList">
+                <p class="empty-msg">No courses started yet.</p>
+            </div>
+        </div>
+        <div class="dash-card">
+            <h3>Recent assessments</h3>
+            <div id="assessmentList">
+                <p class="empty-msg">No assessments taken yet.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-label">Academic standing</div>
+    <div class="standing-grid">
+        <div class="standing-card">
+            <div class="s-label">Average score</div>
+            <div class="s-value" id="standAvg">—</div>
+            <div class="s-sub">All sessions</div>
+        </div>
+        <div class="standing-card">
+            <div class="s-label">Questions answered</div>
+            <div class="s-value" id="standQuestions">—</div>
+            <div class="s-sub">Total answered</div>
+        </div>
+        <div class="standing-card">
+            <div class="s-label">Best course</div>
+            <div class="s-value" id="standBest" style="font-size:16px">—</div>
+            <div class="s-sub" id="standBestScore">—</div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="main.js"></script>
+<script src="dashboard.js"></script>
+</body>
+</html>

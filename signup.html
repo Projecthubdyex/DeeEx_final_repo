@@ -63,10 +63,18 @@
                             <option value="">Select faculty</option>
                             </select>
                         </div>
+                        <div class="fg" id="otherFacultyGroup" style="display:none">
+                            <label for="otherFaculty">Enter your faculty</label>
+                            <input type="text" id="otherFaculty" placeholder="Type your faculty name">
+                        </div>
+                        <div class="fg" id="otherDeptGroup" style="display:none">
+                            <label for="otherDept">Enter your department</label>
+                            <input type="text" id="otherDept" placeholder="Type your department name">
+                        </div>
 
                         <div class="fg">
                             <label for="department">Department</label>
-                            <select id="department" name="department" required>
+                            <select id="department" name="department" required onchange="showOtherDept()">
                             <option value="">Select faculty first</option>
                             </select>
                         </div>
@@ -102,7 +110,7 @@
 
 
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.js"></script>
     <script src="supabase.js"></script>
     <script src="main.js"></script>
 </body>

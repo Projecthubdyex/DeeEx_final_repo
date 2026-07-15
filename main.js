@@ -41,7 +41,9 @@ function goToLogin() {
 // ============================
 
 async function sendEmail() {
-    const text = document.getElementById('myText').value;
+    const textEl = document.getElementById('myText');
+   if (!textEl) return;
+   const text = textEl.value;
 
     await fetch('https://formspree.io/f/xpqenbpn', {
         method: 'POST',
@@ -72,6 +74,73 @@ const loginForm = document.getElementById('loginForm');
      });
  }
 
+ // ============================
+// AUTO REDIRECT IF LOGGED IN
+// ============================
+async function checkAlreadyLoggedIn() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+        window.location.href = 'splash.html';
+    }
+}
+
+// Call this on login and signup pages only
+if (document.getElementById('loginForm') || document.getElementById('signupForm')) {
+    checkAlreadyLoggedIn();
+}
+
+
+
+// ============================
+// FORGOT PASSWORD
+// ============================
+async function forgotPassword() {
+    const email = document.getElementById('email').value.trim();
+
+    if (!email) {
+        alert('Enter your email address first, then click Forgot password.');
+        return;
+    }
+
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+        redirectTo: window.location.origin + '/reset-password.html'
+    });
+
+    if (error) {
+        alert(error.message);
+    } else {
+        alert('Password reset link sent! Check your email.');
+    }
+}
+
+
+// ============================
+// RESET PASSWORD
+// ============================
+const resetForm = document.getElementById('resetForm');
+if (resetForm) {
+    resetForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmNew = document.getElementById('confirmNewPassword').value;
+
+        if (newPassword !== confirmNew) {
+            alert('Passwords do not match.');
+            return;
+        }
+
+        const { error } = await supabaseClient.auth.updateUser({
+            password: newPassword
+        });
+
+        if (error) {
+            alert(error.message);
+        } else {
+            alert('Password updated! Please log in.');
+            window.location.href = 'login.html';
+        }
+    });
+}
 // ============================
 // SOCIAL LOGIN PLACEHOLDERS
 // ============================
@@ -97,8 +166,10 @@ if (signupForm) {
         const fullname = document.getElementById('fullname').value.trim();
         const email = document.getElementById('email').value.trim();
         const university = document.getElementById('university').value.trim();
-        const faculty = document.getElementById('faculty').value;
-        const department = document.getElementById('department').value;
+        let faculty = document.getElementById('faculty').value;
+        let department = document.getElementById('department').value;
+        if (faculty === 'Other') faculty = document.getElementById('otherFaculty').value.trim();
+        if (department === 'Other') department = document.getElementById('otherDept').value.trim();
         const level = document.getElementById('level').value;
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
@@ -128,6 +199,8 @@ async function signupWithGoogle() {
     });
     if (error) alert(error.message);
 }
+
+
 // ============================
 // FACULTY & DEPARTMENT DATA
 // ============================
@@ -206,6 +279,11 @@ function populateFaculties() {
         option.textContent = facultyName;
         facultySelect.appendChild(option);
     }
+
+    const other = document.createElement('option');
+   other.value = 'Other';
+   other.textContent = 'Other (type yours)';
+   facultySelect.appendChild(other);
 }
 
 // ============================
@@ -217,23 +295,39 @@ function updateDepartments() {
     const departmentSelect = document.getElementById('department');
 
     const selectedFaculty = facultySelect.value;
+    const otherFacultyGroup = document.getElementById('otherFacultyGroup');
+    const otherDeptGroup = document.getElementById('otherDeptGroup');
 
     // Clear out old department options first
     departmentSelect.innerHTML = '<option value="">Select department</option>';
+    if (otherDeptGroup) otherDeptGroup.style.display = 'none';
 
     // If no faculty chosen yet, stop here
     if (selectedFaculty === '') return;
+    if (otherFacultyGroup) otherFacultyGroup.style.display = selectedFaculty === 'Other' ? 'block' : 'none';
+
+   const departments = selectedFaculty === 'Other' ? [] : facultyData[selectedFaculty];
 
     // Get the list of departments for the chosen faculty
-    const departments = facultyData[selectedFaculty];
-
+   
     // Add each department as an option
-    departments.forEach(function(dept) {
+    if (departments) departments.forEach(function(dept) {
         const option = document.createElement('option');
         option.value = dept;
         option.textContent = dept;
         departmentSelect.appendChild(option);
     });
+
+    const otherOpt = document.createElement('option');
+   otherOpt.value = 'Other';
+   otherOpt.textContent = 'Other (type yours)';
+   departmentSelect.appendChild(otherOpt);
+}
+
+function showOtherDept() {
+   const dept = document.getElementById('department').value;
+   const otherDeptGroup = document.getElementById('otherDeptGroup');
+   if (otherDeptGroup) otherDeptGroup.style.display = dept === 'Other' ? 'block' : 'none';
 }
 
 // Run this as soon as the page loads
@@ -405,3 +499,26 @@ async function logout() {
     await supabaseClient.auth.signOut();
     window.location.href = 'login.html';
 }
+
+
+// ============================
+// SPLASH SCREEN
+// ============================
+
+async function initSplash() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    if (!session) {
+        window.location.href = 'login.html';
+        return;
+    }
+
+    setTimeout(() => {
+        window.location.href = 'dashboard.html';
+    }, 5000);
+}
+
+if (document.querySelector('.splash-body')) {
+    initSplash();
+}
+//=========== splash ends
