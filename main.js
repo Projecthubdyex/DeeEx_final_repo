@@ -67,10 +67,21 @@ const loginForm = document.getElementById('loginForm');
          const btn = loginForm.querySelector('button[type="submit"]');
          btn.textContent = 'Logging in...';
          btn.disabled = true;
-         const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
-         if (error) { alert(error.message); btn.textContent = 'Login'; btn.disabled = false; return; }
-         sessionStorage.removeItem('splashShown');
-         window.location.href = 'splash.html';
+         const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) { alert(error.message); btn.textContent = 'Login'; btn.disabled = false; return; }
+
+            const { data: profile } = await supabaseClient
+                .from('profiles')
+                .select('role')
+                .eq('id', data.user.id)
+                .single();
+
+            sessionStorage.removeItem('splashShown');
+            if (profile && profile.role === 'admin') {
+                window.location.href = 'admin-dashboard.html';
+            } else {
+                window.location.href = 'splash.html';
+            }
      });
  }
 

@@ -1901,4 +1901,22 @@ a {
     .standing-grid {
         grid-template-columns: 1fr 1fr;
     }
+}
+@media (max-width: 900px) {
+    .topbar {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .topbar-left .meta {
+        font-size: 11px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 200px;
+    }
+
+    .topbar-right {
+        margin-left: auto;
+    }
 }/* ends*/
