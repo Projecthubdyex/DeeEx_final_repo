@@ -46,7 +46,7 @@ async function loadDashboard() {
 
         document.getElementById('topGreeting').textContent = `${getGreeting()}, ${firstName}!`;
         document.getElementById('topMeta').textContent =
-            `${profile.university} · ${profile.department} · ${profile.level}`;
+            `${profile.full_name} · ${profile.department} · ${profile.level}`;
         document.getElementById('sidebarName').textContent = profile.full_name;
         document.getElementById('sidebarDept').textContent = `${profile.department} · ${profile.level}`;
         document.getElementById('sidebarAvatar').textContent = initials;

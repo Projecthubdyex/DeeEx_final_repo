@@ -7,9 +7,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/@tabler/icons-webfont/3.31.0/tabler-icons.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" type="text/css">
 </head>
-<body>
+<body class="dash-body">
 
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
@@ -19,19 +19,19 @@
         <a href="dashboard.html" class="nav-link-item active">
             <i class="ti ti-layout-dashboard"></i> Dashboard
         </a>
-        <a href="courses.html" class="nav-link-item">
+        <a href="app-courses.html" class="nav-link-item">
             <i class="ti ti-books"></i> My courses
         </a>
-        <a href="assessment.html" class="nav-link-item">
+        <a href="app-assessment.html" class="nav-link-item">
             <i class="ti ti-clipboard-check"></i> Assessments
         </a>
-        <a href="progress.html" class="nav-link-item">
+        <a href="app-progress.html" class="nav-link-item">
             <i class="ti ti-chart-line"></i> Progress
         </a>
-        <a href="leaderboard.html" class="nav-link-item">
+        <a href="app-leaderboard.html" class="nav-link-item">
             <i class="ti ti-trophy"></i> Leaderboard
         </a>
-        <a href="settings.html" class="nav-link-item">
+        <a href="app-settings.html" class="nav-link-item">
             <i class="ti ti-settings"></i> Settings
         </a>
     </nav>
@@ -57,11 +57,10 @@
             <h1 id="topGreeting">Welcome back!</h1>
         </div>
         <div class="topbar-right">
-            <div class="icon-btn hamburger-btn" onclick="openSidebar()">
-                <i class="ti ti-menu-2"></i>
-            </div>
-            <div class="icon-btn"><i class="ti ti-bell"></i></div>
-            <div class="icon-btn"><i class="ti ti-user"></i></div>
+            
+            <div class="icon-btn">🔔</div>
+            <div class="icon-btn">👤</div>
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
         </div>
     </div>
 

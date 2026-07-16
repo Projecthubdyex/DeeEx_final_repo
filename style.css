@@ -1609,6 +1609,20 @@ a {
     align-items: center;
     gap: 10px;
 }
+/* Dashboard hamburger only */
+.topbar .hamburger-btn {
+    display: none;
+    background: #006DF2;
+    border-color: #006DF2;
+    color: white;
+    font-size: 20px;
+}
+
+@media (max-width: 1024px) {
+    .topbar .hamburger-btn {
+        display: flex !important;
+    }
+}
 
 .icon-btn {
     width: 38px;
@@ -1806,6 +1820,10 @@ a {
     color: #2e7d32;
 }
 
+.dash-body {
+    padding-top: 0 !important;
+}
+
 /* ── Standing ── */
 .standing-grid {
     display: grid;
@@ -1840,7 +1858,7 @@ a {
 }
 
 /* ── Responsive ── */
-@media (max-width: 900px) {
+@media (max-width: 1024px) {
     .sidebar {
         transform: translateX(-100%);
     }
