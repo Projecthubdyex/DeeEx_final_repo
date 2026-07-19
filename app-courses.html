@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — My Courses</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx</div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-link-item">📊 Dashboard</a>
+        <a href="app-courses.html" class="nav-link-item active">📚 My courses</a>
+        <a href="app-assessment.html" class="nav-link-item">📝 Assessments</a>
+        <a href="app-progress.html" class="nav-link-item">📈 Progress</a>
+        <a href="app-leaderboard.html" class="nav-link-item">🏆 Leaderboard</a>
+        <a href="app-settings.html" class="nav-link-item">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="sidebarAvatar">?</div>
+            <div class="user-info">
+                <p id="sidebarName">Loading...</p>
+                <span id="sidebarDept">—</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🚪 Log out</button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <div class="topbar">
+        <div class="topbar-left">
+            <p class="meta">My courses</p>
+            <h1>Browse & practice</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
+        </div>
+    </div>
+
+    <!-- Search + filter -->
+    <div class="assessment-controls">
+        <div class="search-bar">
+            <input type="text" id="courseSearch" placeholder="Search by course code or title..." onkeyup="filterCourses()">
+        </div>
+        <div class="filter-tabs">
+            <button class="filter-tab active" data-subject="all" onclick="setCourseFilter(this)">All</button>
+            <button class="filter-tab" data-subject="mth" onclick="setCourseFilter(this)">Mathematics</button>
+            <button class="filter-tab" data-subject="sta" onclick="setCourseFilter(this)">Statistics</button>
+            <button class="filter-tab" data-subject="phy" onclick="setCourseFilter(this)">Physics</button>
+            <button class="filter-tab" data-subject="chm" onclick="setCourseFilter(this)">Chemistry</button>
+            <button class="filter-tab" data-subject="bio" onclick="setCourseFilter(this)">Biology</button>
+            <button class="filter-tab" data-subject="cos" onclick="setCourseFilter(this)">Computer Science</button>
+            <button class="filter-tab" data-subject="gsp" onclick="setCourseFilter(this)">GSP / GST</button>
+        </div>
+    </div>
+
+    <!-- Courses grid -->
+    <div class="assessment-grid" id="appCourseGrid">
+        <p class="empty-msg">Loading courses...</p>
+    </div>
+    <p class="no-results" id="appNoResults" style="display:none">No courses match your search.</p>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="main.js"></script>
+<script src="app-courses.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

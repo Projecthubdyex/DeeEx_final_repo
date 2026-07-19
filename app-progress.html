@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — Progress</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx</div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-link-item">📊 Dashboard</a>
+        <a href="app-courses.html" class="nav-link-item">📚 My courses</a>
+        <a href="app-assessment.html" class="nav-link-item">📝 Assessments</a>
+        <a href="app-progress.html" class="nav-link-item active">📈 Progress</a>
+        <a href="app-leaderboard.html" class="nav-link-item">🏆 Leaderboard</a>
+        <a href="app-settings.html" class="nav-link-item">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="sidebarAvatar">?</div>
+            <div class="user-info">
+                <p id="sidebarName">Loading...</p>
+                <span id="sidebarDept">—</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🚪 Log out</button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <div class="topbar">
+        <div class="topbar-left">
+            <p class="meta">Progress</p>
+            <h1>Your progress</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
+        </div>
+    </div>
+
+    <!-- Overview stats -->
+    <div class="section-label">Overview</div>
+    <div class="stats-grid" style="margin-bottom:28px">
+        <div class="stat-card">
+            <div class="s-label">Total sessions</div>
+            <div class="s-value" id="pgStatSessions">—</div>
+            <div class="s-sub">All time</div>
+        </div>
+        <div class="stat-card">
+            <div class="s-label">Average score</div>
+            <div class="s-value" id="pgStatAvg">—</div>
+            <div class="s-sub">Across all courses</div>
+        </div>
+        <div class="stat-card">
+            <div class="s-label">Best score</div>
+            <div class="s-value" id="pgStatBest">—</div>
+            <div class="s-sub">Personal best</div>
+        </div>
+        <div class="stat-card">
+            <div class="s-label">Courses started</div>
+            <div class="s-value" id="pgStatCourses">—</div>
+            <div class="s-sub">Unique courses</div>
+        </div>
+    </div>
+
+    <!-- Course progress -->
+    <div class="section-label">Course breakdown</div>
+    <div class="dash-card" style="margin-bottom:28px">
+        <div id="courseBreakdown">
+            <p class="empty-msg">No assessments taken yet.</p>
+        </div>
+    </div>
+
+    <!-- Recent sessions -->
+    <div class="section-label">Recent sessions</div>
+    <div class="dash-card">
+        <table class="progress-table">
+            <thead>
+                <tr>
+                    <th>Course</th>
+                    <th>Mode</th>
+                    <th>Score</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody id="sessionsTable">
+                <tr><td colspan="4" class="empty-msg">No sessions yet.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="main.js"></script>
+<script src="app-progress.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

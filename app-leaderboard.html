@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — Leaderboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx</div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-link-item">📊 Dashboard</a>
+        <a href="app-courses.html" class="nav-link-item">📚 My courses</a>
+        <a href="app-assessment.html" class="nav-link-item">📝 Assessments</a>
+        <a href="app-progress.html" class="nav-link-item">📈 Progress</a>
+        <a href="app-leaderboard.html" class="nav-link-item active">🏆 Leaderboard</a>
+        <a href="app-settings.html" class="nav-link-item">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="sidebarAvatar">?</div>
+            <div class="user-info">
+                <p id="sidebarName">Loading...</p>
+                <span id="sidebarDept">—</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🚪 Log out</button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <div class="topbar">
+        <div class="topbar-left">
+            <p class="meta">Leaderboard</p>
+            <h1>Top performers</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
+        </div>
+    </div>
+
+    <!-- Filter tabs -->
+    <div class="lb-filters">
+        <button class="filter-tab active" data-filter="overall" onclick="setLbFilter(this)">Overall</button>
+        <button class="filter-tab" data-filter="mth-101-111" onclick="setLbFilter(this)">MTH 101/111</button>
+        <button class="filter-tab" data-filter="mth-103-121" onclick="setLbFilter(this)">MTH 103/121</button>
+        <button class="filter-tab" data-filter="sta-111" onclick="setLbFilter(this)">STA 111</button>
+        <button class="filter-tab" data-filter="phy-101" onclick="setLbFilter(this)">PHY 101</button>
+        <button class="filter-tab" data-filter="chm-101" onclick="setLbFilter(this)">CHM 101</button>
+    </div>
+
+    <!-- Your rank card -->
+    <div class="dash-card lb-your-rank" id="yourRankCard" style="display:none">
+        <div class="lb-your-rank-inner">
+            <span class="lb-rank-num" id="yourRankNum">#—</span>
+            <div>
+                <p class="lb-your-name">Your ranking</p>
+                <p class="lb-your-score" id="yourRankScore">—</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top 3 podium -->
+    <div class="lb-podium" id="lbPodium"></div>
+
+    <!-- Full table -->
+    <div class="dash-card" style="margin-top:24px">
+        <table class="progress-table">
+            <thead>
+                <tr>
+                    <th>Rank</th>
+                    <th>Student</th>
+                    <th>Department</th>
+                    <th>Avg score</th>
+                    <th>Sessions</th>
+                </tr>
+            </thead>
+            <tbody id="lbTable">
+                <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="main.js"></script>
+<script src="app-leaderboard.js"></script>
+</body>
+</html>

@@ -154,5 +154,9 @@ async function loadDashboard() {
 // ============================
 // INIT
 // ============================
+// Apply saved dark mode
+if (localStorage.getItem('deeex-dark') === 'true') {
+    document.body.classList.add('dark-mode');
+}
 
 document.addEventListener('DOMContentLoaded', loadDashboard);

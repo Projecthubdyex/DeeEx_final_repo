@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — Assessment</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx</div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-link-item">📊 Dashboard</a>
+        <a href="app-courses.html" class="nav-link-item">📚 My courses</a>
+        <a href="app-assessment.html" class="nav-link-item active">📝 Assessments</a>
+        <a href="app-progress.html" class="nav-link-item">📈 Progress</a>
+        <a href="app-leaderboard.html" class="nav-link-item">🏆 Leaderboard</a>
+        <a href="app-settings.html" class="nav-link-item">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="sidebarAvatar">?</div>
+            <div class="user-info">
+                <p id="sidebarName">Loading...</p>
+                <span id="sidebarDept">—</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🚪 Log out</button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+
+    <!-- STEP 1: Pick course + mode -->
+    <div id="step-pick" class="assess-step">
+        <div class="topbar">
+            <div class="topbar-left">
+                <p class="meta">Assessments</p>
+                <h1>Start an assessment</h1>
+            </div>
+            <div class="topbar-right">
+                <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
+            </div>
+        </div>
+
+        <div class="pick-grid">
+            <div class="dash-card">
+                <h3>1. Pick a course</h3>
+                <div class="course-pick-list" id="coursePickList">
+                    <p class="empty-msg">Loading courses...</p>
+                </div>
+            </div>
+
+            <div class="dash-card">
+                <h3>2. Choose mode</h3>
+                <div class="mode-cards">
+                    <div class="mode-card" id="modeExam" onclick="selectMode('exam')">
+                        <div class="mode-icon">📋</div>
+                        <div class="mode-name">Exam mode</div>
+                        <div class="mode-desc">Timed, strict — no hints. Answers revealed at the end.</div>
+                    </div>
+                    <div class="mode-card" id="modeTest" onclick="selectMode('test')">
+                        <div class="mode-icon">📖</div>
+                        <div class="mode-name">Test mode</div>
+                        <div class="mode-desc">Relaxed practice. Answers revealed at the end.</div>
+                    </div>
+                </div>
+
+                <div id="startInfo" class="start-info" style="display:none">
+                    <p id="startInfoText"></p>
+                    <button class="primary-btn" onclick="startAssessmentSession()">Start now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 2: Quiz interface -->
+    <div id="step-quiz" class="assess-step" style="display:none">
+        <div class="quiz-topbar">
+            <div class="quiz-info">
+                <span id="quizCourseLabel"></span>
+                <span class="quiz-mode-badge" id="quizModeBadge"></span>
+            </div>
+            <div class="quiz-timer" id="quizTimer">--:--</div>
+        </div>
+
+        <div class="quiz-progress-bar">
+            <div class="quiz-progress-fill" id="quizProgressFill"></div>
+        </div>
+        <div class="quiz-progress-label" id="quizProgressLabel">Question 1 of 20</div>
+
+        <div class="quiz-card">
+            <div class="question-text" id="questionText"></div>
+            <div class="options-list" id="optionsList"></div>
+        </div>
+
+        <div class="quiz-nav">
+            <button class="quiz-nav-btn" id="btnPrev" onclick="goQuestion(-1)">← Previous</button>
+            <div class="quiz-dots" id="quizDots"></div>
+            <button class="quiz-nav-btn" id="btnNext" onclick="goQuestion(1)">Next →</button>
+        </div>
+
+        <div class="quiz-submit-row">
+            <button class="primary-btn" onclick="confirmSubmit()">Submit assessment</button>
+            <span class="quiz-answered-count" id="answeredCount"></span>
+        </div>
+    </div>
+
+    <!-- STEP 3: Results -->
+    <div id="step-results" class="assess-step" style="display:none">
+        <div class="topbar">
+            <div class="topbar-left">
+                <p class="meta">Assessment complete</p>
+                <h1>Your results</h1>
+            </div>
+        </div>
+
+        <div class="results-summary">
+            <div class="result-score-card">
+                <div class="result-score" id="resultScore">0%</div>
+                <div class="result-label">Final score</div>
+            </div>
+            <div class="result-stats">
+                <div class="result-stat">
+                    <span class="rs-value" id="resultCorrect">0</span>
+                    <span class="rs-label">Correct</span>
+                </div>
+                <div class="result-stat">
+                    <span class="rs-value" id="resultWrong">0</span>
+                    <span class="rs-label">Wrong</span>
+                </div>
+                <div class="result-stat">
+                    <span class="rs-value" id="resultSkipped">0</span>
+                    <span class="rs-label">Skipped</span>
+                </div>
+                <div class="result-stat">
+                    <span class="rs-value" id="resultTime">0:00</span>
+                    <span class="rs-label">Time taken</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="results-actions">
+            <button class="primary-btn" onclick="retakeAssessment()">Retake</button>
+            <button class="quiz-nav-btn" onclick="goToDashboard()">Back to dashboard</button>
+        </div>
+
+        <div class="results-review">
+            <h3>Review answers</h3>
+            <div id="reviewList"></div>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="main.js"></script>
+<script src="app-assessment.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

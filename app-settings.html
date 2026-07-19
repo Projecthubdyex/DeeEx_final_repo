@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — Settings</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx</div>
+    <nav class="sidebar-nav">
+        <a href="dashboard.html" class="nav-link-item">📊 Dashboard</a>
+        <a href="app-courses.html" class="nav-link-item">📚 My courses</a>
+        <a href="app-assessment.html" class="nav-link-item">📝 Assessments</a>
+        <a href="app-progress.html" class="nav-link-item">📈 Progress</a>
+        <a href="app-leaderboard.html" class="nav-link-item">🏆 Leaderboard</a>
+        <a href="app-settings.html" class="nav-link-item active">⚙️ Settings</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="sidebarAvatar">?</div>
+            <div class="user-info">
+                <p id="sidebarName">Loading...</p>
+                <span id="sidebarDept">—</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🚪 Log out</button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <div class="topbar">
+        <div class="topbar-left">
+            <p class="meta">Settings</p>
+            <h1>Account settings</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
+        </div>
+    </div>
+
+    <!-- Profile -->
+    <div class="section-label">Profile</div>
+    <div class="dash-card settings-card">
+        <div class="settings-avatar-row">
+            <div class="settings-avatar" id="settingsAvatar">?</div>
+            <div>
+                <p class="settings-name" id="settingsName">Loading...</p>
+                <p class="settings-email" id="settingsEmail">—</p>
+            </div>
+        </div>
+
+        <div class="settings-form">
+            <div class="fg">
+                <label>Full name</label>
+                <input type="text" id="editName" placeholder="Your full name">
+            </div>
+            <div class="fg">
+                <label>University</label>
+                <input type="text" id="editUniversity" placeholder="Your university">
+            </div>
+            <div class="fg">
+                <label>Faculty</label>
+                <input type="text" id="editFaculty" placeholder="Your faculty">
+            </div>
+            <div class="fg">
+                <label>Department</label>
+                <input type="text" id="editDepartment" placeholder="Your department">
+            </div>
+            <div class="fg">
+                <label>Level</label>
+                <select id="editLevel">
+                    <option value="100">100 level</option>
+                    <option value="200">200 level</option>
+                    <option value="300">300 level</option>
+                    <option value="400">400 level</option>
+                    <option value="500">500 level</option>
+                </select>
+            </div>
+            <button class="primary-btn" onclick="saveProfile()">Save changes</button>
+            <span class="settings-msg" id="profileMsg"></span>
+        </div>
+    </div>
+
+    <!-- Password -->
+    <div class="section-label" style="margin-top:28px">Change password</div>
+    <div class="dash-card settings-card">
+        <div class="settings-form">
+            <div class="fg">
+                <label>New password</label>
+                <input type="password" id="newPassword" placeholder="New password">
+            </div>
+            <div class="fg">
+                <label>Confirm new password</label>
+                <input type="password" id="confirmNewPassword" placeholder="Repeat new password">
+            </div>
+            <button class="primary-btn" onclick="changePassword()">Update password</button>
+            <span class="settings-msg" id="passwordMsg"></span>
+        </div>
+    </div>
+
+    <!-- Appearance -->
+    <div class="section-label" style="margin-top:28px">Appearance</div>
+    <div class="dash-card settings-card">
+        <div class="settings-toggle-row">
+            <div>
+                <p class="settings-toggle-label">Dark mode</p>
+                <p class="settings-toggle-sub">Switch between light and dark theme</p>
+            </div>
+            <label class="toggle-switch">
+                <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+                <span class="toggle-slider"></span>
+            </label>
+        </div>
+    </div>
+
+    <!-- Danger zone -->
+    <div class="section-label" style="margin-top:28px">Account</div>
+    <div class="dash-card settings-card">
+        <div class="settings-danger-row">
+            <div>
+                <p class="settings-toggle-label">Log out</p>
+                <p class="settings-toggle-sub">Sign out of your account on this device</p>
+            </div>
+            <button class="settings-danger-btn" onclick="logout()">Log out</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="main.js"></script>
+<script src="app-settings.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</body>
+</html>

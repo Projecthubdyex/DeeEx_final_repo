@@ -90,14 +90,26 @@ const loginForm = document.getElementById('loginForm');
 // ============================
 async function checkAlreadyLoggedIn() {
     const { data: { session } } = await supabaseClient.auth.getSession();
-    if (session) {
-        window.location.href = 'splash.html';
-    }
-}
+    if (!session) return;
 
-// Call this on login and signup pages only
-if (document.getElementById('loginForm') || document.getElementById('signupForm')) {
-    checkAlreadyLoggedIn();
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Don't redirect if already on the target page
+    if (profile && profile.role === 'admin') {
+        if (currentPage !== 'admin-dashboard.html') {
+            window.location.href = 'admin-dashboard.html';
+        }
+    } else {
+        if (currentPage !== 'splash.html' && currentPage !== 'dashboard.html') {
+            window.location.href = 'splash.html';
+        }
+    }
 }
 
 
@@ -524,8 +536,19 @@ async function initSplash() {
         return;
     }
 
+    // Check role before redirecting
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('role')
+        .eq('id', session.user.id)
+        .single();
+
     setTimeout(() => {
-        window.location.href = 'dashboard.html';
+        if (profile && profile.role === 'admin') {
+            window.location.href = 'admin-dashboard.html';
+        } else {
+            window.location.href = 'dashboard.html';
+        }
     }, 5000);
 }
 
@@ -533,3 +556,10 @@ if (document.querySelector('.splash-body')) {
     initSplash();
 }
 //=========== splash ends
+
+
+
+
+if (document.getElementById('loginForm') || document.getElementById('signupForm')) {
+    checkAlreadyLoggedIn();
+}
