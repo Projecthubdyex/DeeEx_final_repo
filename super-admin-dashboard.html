@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — Super Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx <span class="admin-badge">Super Admin</span></div>
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-link-item active" onclick="showSection('overview', this)">📊 Overview</a>
+        <a href="#" class="nav-link-item" onclick="showSection('analytics', this)">📈 Analytics</a>
+        <a href="#" class="nav-link-item" onclick="showSection('users', this)">👥 Users</a>
+        <a href="#" class="nav-link-item" onclick="showSection('lecturers', this)">👨‍🏫 Lecturers</a>
+        <a href="#" class="nav-link-item" onclick="showSection('questions', this)">❓ Questions</a>
+        <a href="#" class="nav-link-item" onclick="showSection('topics', this)">📂 Topics</a>
+        <a href="#" class="nav-link-item" onclick="showSection('universities', this)">🏛️ Universities</a>
+        <a href="#" class="nav-link-item" onclick="showSection('announcements', this)">📢 Announcements</a>
+        <a href="#" class="nav-link-item" onclick="showSection('sessions', this)">📋 Sessions</a>
+        <a href="#" class="nav-link-item" onclick="showSection('export', this)">⬇️ Export</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="saAvatar">SA</div>
+            <div class="user-info">
+                <p id="saName">Super Admin</p>
+                <span>Super Administrator</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🚪 Log out</button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <div class="topbar">
+        <div class="topbar-left">
+            <p class="meta">Super Admin Panel</p>
+            <h1 id="sectionTitle">Overview</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
+        </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="section-overview" class="admin-section">
+        <div class="stats-grid" style="margin-bottom:28px">
+            <div class="stat-card">
+                <div class="s-label">Total users</div>
+                <div class="s-value" id="saStatUsers">—</div>
+                <div class="s-sub">Registered students</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Total questions</div>
+                <div class="s-value" id="saStatQuestions">—</div>
+                <div class="s-sub">In question bank</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Sessions taken</div>
+                <div class="s-value" id="saStatSessions">—</div>
+                <div class="s-sub">All time</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Universities</div>
+                <div class="s-value" id="saStatUnis">—</div>
+                <div class="s-sub">Partner institutions</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Admins</div>
+                <div class="s-value" id="saStatAdmins">—</div>
+                <div class="s-sub">Platform admins</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Lecturers</div>
+                <div class="s-value" id="saStatLecturers">—</div>
+                <div class="s-sub">Active lecturers</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Topics</div>
+                <div class="s-value" id="saStatTopics">—</div>
+                <div class="s-sub">Course topics</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Pass rate</div>
+                <div class="s-value" id="saStatPassRate">—</div>
+                <div class="s-sub">Scoring above 50%</div>
+            </div>
+        </div>
+
+        <!-- Recent activity -->
+        <div class="section-label">Recent signups</div>
+        <div class="dash-card">
+            <table class="progress-table">
+                <thead>
+                    <tr><th>Name</th><th>University</th><th>Department</th><th>Role</th><th>Joined</th></tr>
+                </thead>
+                <tbody id="recentSignups">
+                    <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ANALYTICS -->
+    <div id="section-analytics" class="admin-section" style="display:none">
+        <div class="section-label">Course performance</div>
+        <div class="dash-card" style="margin-bottom:20px">
+            <div id="courseAnalytics"><p class="empty-msg">Loading...</p></div>
+        </div>
+        <div class="section-label">Most active users</div>
+        <div class="dash-card">
+            <table class="progress-table">
+                <thead>
+                    <tr><th>Name</th><th>Department</th><th>Sessions</th><th>Avg score</th></tr>
+                </thead>
+                <tbody id="activeUsersTable">
+                    <tr><td colspan="4" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="section-users" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <input type="text" id="userSearch" placeholder="Search by name or university..." 
+                onkeyup="filterUsers()" style="border:1.5px solid #b9d6f9;border-radius:50px;padding:8px 16px;font-family:Poppins,sans-serif;font-size:13px;width:260px">
+            <select id="userRoleFilter" onchange="filterUsers()" 
+                style="border:1.5px solid #b9d6f9;border-radius:50px;padding:8px 14px;font-family:Poppins,sans-serif;font-size:13px">
+                <option value="">All roles</option>
+                <option value="student">Students</option>
+                <option value="lecturer">Lecturers</option>
+                <option value="admin">Admins</option>
+                <option value="super_admin">Super admins</option>
+            </select>
+        </div>
+        <div class="dash-card">
+            <table class="progress-table">
+                <thead>
+                    <tr><th>Name</th><th>University</th><th>Department</th><th>Role</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="saUsersTable">
+                    <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- LECTURERS -->
+    <div id="section-lecturers" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('assignLecturerModal')">+ Assign lecturer</button>
+        </div>
+        <div class="dash-card">
+            <table class="progress-table">
+                <thead>
+                    <tr><th>Name</th><th>Email</th><th>Assigned course</th><th>Questions added</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="lecturersTable">
+                    <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="section-questions" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('saAddQuestionModal')">+ Add question</button>
+            <button class="admin-btn admin-btn-outline" onclick="showModal('saCsvModal')">⬆ Upload CSV</button>
+            <button class="admin-btn admin-btn-outline" style="background:#fce8e8;color:#a32d2d;border-color:#ef9a9a" onclick="bulkDeleteConfirm()">🗑 Bulk delete</button>
+        </div>
+        <div class="dash-card">
+            <div class="admin-filters">
+                <select id="saFilterCourse" onchange="saLoadQuestions()">
+                    <option value="">All courses</option>
+                </select>
+                <select id="saFilterTopic" onchange="saLoadQuestions()">
+                    <option value="">All topics</option>
+                </select>
+                <select id="saFilterMode" onchange="saLoadQuestions()">
+                    <option value="">All modes</option>
+                    <option value="exam">Exam</option>
+                    <option value="test">Test</option>
+                    <option value="both">Both</option>
+                </select>
+            </div>
+            <table class="progress-table">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="selectAll" onchange="toggleSelectAll()"></th>
+                        <th>Question</th>
+                        <th>Course</th>
+                        <th>Topic</th>
+                        <th>Mode</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="saQuestionsTable">
+                    <tr><td colspan="6" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TOPICS -->
+    <div id="section-topics" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addTopicModal')">+ Add topic</button>
+            <select id="topicCourseFilter" onchange="loadTopics()" 
+                style="border:1.5px solid #b9d6f9;border-radius:50px;padding:8px 14px;font-family:Poppins,sans-serif;font-size:13px">
+                <option value="">All courses</option>
+            </select>
+        </div>
+        <div class="admin-grid" id="topicsGrid">
+            <p class="empty-msg">Loading topics...</p>
+        </div>
+    </div>
+
+    <!-- UNIVERSITIES -->
+    <div id="section-universities" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addUniModal')">+ Add university</button>
+        </div>
+        <div class="admin-grid" id="saUnisGrid">
+            <p class="empty-msg">Loading...</p>
+        </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS -->
+    <div id="section-announcements" class="admin-section" style="display:none">
+        <div class="dash-card" style="margin-bottom:20px">
+            <h3 style="font-size:15px;font-weight:600;color:#1a4fa8;margin-bottom:16px">Send announcement</h3>
+            <div class="fg">
+                <label>Title</label>
+                <input type="text" id="announcementTitle" placeholder="Announcement title">
+            </div>
+            <div class="fg">
+                <label>Message</label>
+                <textarea id="announcementMsg" rows="4" placeholder="Write your announcement..." 
+                    style="width:100%;box-sizing:border-box;border:1.5px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:Poppins,sans-serif;font-size:13px;resize:vertical"></textarea>
+            </div>
+            <div class="fg">
+                <label>Target</label>
+                <select id="announcementTarget" style="width:100%;border:1.5px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:Poppins,sans-serif;font-size:13px">
+                    <option value="all">All students</option>
+                    <option value="university">Specific university</option>
+                </select>
+            </div>
+            <button class="primary-btn" onclick="sendAnnouncement()">Send announcement</button>
+        </div>
+        <div class="section-label">Sent announcements</div>
+        <div class="dash-card">
+            <div id="announcementsList"><p class="empty-msg">No announcements yet.</p></div>
+        </div>
+    </div>
+
+    <!-- SESSIONS -->
+    <div id="section-sessions" class="admin-section" style="display:none">
+        <div class="admin-filters" style="margin-bottom:16px">
+            <select id="sessionCourseFilter" onchange="loadAllSessions()" 
+                style="border:1.5px solid #b9d6f9;border-radius:50px;padding:8px 14px;font-family:Poppins,sans-serif;font-size:13px">
+                <option value="">All courses</option>
+            </select>
+            <select id="sessionModeFilter" onchange="loadAllSessions()"
+                style="border:1.5px solid #b9d6f9;border-radius:50px;padding:8px 14px;font-family:Poppins,sans-serif;font-size:13px">
+                <option value="">All modes</option>
+                <option value="exam">Exam</option>
+                <option value="test">Test</option>
+            </select>
+        </div>
+        <div class="dash-card">
+            <table class="progress-table">
+                <thead>
+                    <tr><th>Student</th><th>Course</th><th>Mode</th><th>Score</th><th>Date</th></tr>
+                </thead>
+                <tbody id="allSessionsTable">
+                    <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- EXPORT -->
+    <div id="section-export" class="admin-section" style="display:none">
+        <div class="two-col">
+            <div class="dash-card">
+                <h3 style="font-size:15px;font-weight:600;color:#1a4fa8;margin-bottom:12px">Export users</h3>
+                <p style="font-size:13px;color:#666;margin-bottom:16px">Download all registered users as a CSV file.</p>
+                <button class="primary-btn" onclick="exportUsers()">⬇ Export users CSV</button>
+            </div>
+            <div class="dash-card">
+                <h3 style="font-size:15px;font-weight:600;color:#1a4fa8;margin-bottom:12px">Export questions</h3>
+                <p style="font-size:13px;color:#666;margin-bottom:16px">Download the full question bank as a CSV file.</p>
+                <button class="primary-btn" onclick="exportQuestions()">⬇ Export questions CSV</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- MODALS -->
+
+<!-- Assign lecturer -->
+<div class="modal-overlay" id="assignLecturerModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('assignLecturerModal')">✕</button>
+        <h3>Assign lecturer</h3>
+        <div class="fg">
+            <label>Select user</label>
+            <select id="lecturerUserSelect">
+                <option value="">Select a user</option>
+            </select>
+        </div>
+        <div class="fg">
+            <label>Assign to course</label>
+            <select id="lecturerCourseSelect">
+                <option value="">Select course</option>
+            </select>
+        </div>
+        <button class="admin-btn" onclick="assignLecturer()">Assign</button>
+    </div>
+</div>
+
+<!-- Add topic -->
+<div class="modal-overlay" id="addTopicModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('addTopicModal')">✕</button>
+        <h3>Add topic</h3>
+        <div class="fg">
+            <label>Course</label>
+            <select id="topicCourseId">
+                <option value="">Select course</option>
+            </select>
+        </div>
+        <div class="fg">
+            <label>Topic title</label>
+            <input type="text" id="topicTitle" placeholder="e.g. Differentiation">
+        </div>
+        <div class="fg">
+            <label>Description (optional)</label>
+            <textarea id="topicDesc" rows="2" placeholder="Short description" 
+                style="width:100%;box-sizing:border-box;border:1.5px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:Poppins,sans-serif;font-size:13px"></textarea>
+        </div>
+        <button class="admin-btn" onclick="submitTopic()">Save topic</button>
+    </div>
+</div>
+
+<!-- Add question modal -->
+<div class="modal-overlay" id="saAddQuestionModal">
+    <div class="modal-card modal-large">
+        <button class="modal-close" onclick="hideModal('saAddQuestionModal')">✕</button>
+        <h3>Add question</h3>
+        <div class="fg">
+            <label>Course</label>
+            <select id="saQCourseId" onchange="loadTopicsForQuestion()">
+                <option value="">Select course</option>
+            </select>
+        </div>
+        <div class="fg">
+            <label>Topic (optional)</label>
+            <select id="saQTopicId">
+                <option value="">No topic</option>
+            </select>
+        </div>
+        <div class="fg">
+            <label>Question</label>
+            <textarea id="saQText" rows="3" placeholder="Enter question text"></textarea>
+        </div>
+        <div class="fg"><label>Option A</label><input type="text" id="saQA" placeholder="Option A"></div>
+        <div class="fg"><label>Option B</label><input type="text" id="saQB" placeholder="Option B"></div>
+        <div class="fg"><label>Option C</label><input type="text" id="saQC" placeholder="Option C"></div>
+        <div class="fg"><label>Option D</label><input type="text" id="saQD" placeholder="Option D"></div>
+        <div class="fg">
+            <label>Correct answer</label>
+            <select id="saQAnswer">
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+                <option value="d">D</option>
+            </select>
+        </div>
+        <div class="fg">
+            <label>Explanation (optional)</label>
+            <textarea id="saQExplanation" rows="2" placeholder="Explain the correct answer"
+                style="width:100%;box-sizing:border-box;border:1.5px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:Poppins,sans-serif;font-size:13px"></textarea>
+        </div>
+        <div class="fg"><label>Year (optional)</label><input type="text" id="saQYear" placeholder="e.g. 2022"></div>
+        <div class="fg">
+            <label>Mode</label>
+            <select id="saQMode">
+                <option value="both">Both</option>
+                <option value="exam">Exam only</option>
+                <option value="test">Test only</option>
+            </select>
+        </div>
+        <div class="fg">
+            <label>Time limit (minutes)</label>
+            <input type="number" id="saQTimeLimit" value="30" min="1">
+        </div>
+        <button class="admin-btn" onclick="saSubmitQuestion()">Save question</button>
+    </div>
+</div>
+
+<!-- CSV upload -->
+<div class="modal-overlay" id="saCsvModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('saCsvModal')">✕</button>
+        <h3>Upload questions via CSV</h3>
+        <p class="modal-sub">Columns: course_id, course_code, course_title, question_text, option_a, option_b, option_c, option_d, correct_answer, explanation, year, mode, time_limit</p>
+        <div class="fg" style="margin-top:16px">
+            <input type="file" id="saCsvFile" accept=".csv">
+        </div>
+        <button class="admin-btn" onclick="saUploadCSV()">Upload</button>
+    </div>
+</div>
+
+<!-- Add university -->
+<div class="modal-overlay" id="addUniModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('addUniModal')">✕</button>
+        <h3>Add university</h3>
+        <div class="fg"><label>University name</label><input type="text" id="saUniName" placeholder="e.g. University of Nigeria"></div>
+        <div class="fg"><label>Location</label><input type="text" id="saUniLocation" placeholder="e.g. Nsukka, Enugu State"></div>
+        <div class="fg"><label>Students count</label><input type="number" id="saUniStudents" placeholder="e.g. 1200"></div>
+        <button class="admin-btn" onclick="saSubmitUniversity()">Save</button>
+    </div>
+</div>
+
+<!-- Change role modal -->
+<div class="modal-overlay" id="changeRoleModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('changeRoleModal')">✕</button>
+        <h3>Change user role</h3>
+        <p class="modal-sub" id="changeRoleUserName"></p>
+        <input type="hidden" id="changeRoleUserId">
+        <div class="fg">
+            <label>New role</label>
+            <select id="newRoleSelect">
+                <option value="student">Student</option>
+                <option value="lecturer">Lecturer</option>
+                <option value="admin">Admin</option>
+                <option value="super_admin">Super Admin</option>
+            </select>
+        </div>
+        <div class="fg" id="assignCourseGroup" style="display:none">
+            <label>Assign course (for lecturers)</label>
+            <select id="changeRoleCourse">
+                <option value="">Select course</option>
+            </select>
+        </div>
+        <button class="admin-btn" onclick="saveRoleChange()">Save</button>
+    </div>
+</div>
+
+<!-- Edit question modal -->
+<div class="modal-overlay" id="editQuestionModal">
+    <div class="modal-card modal-large">
+        <button class="modal-close" onclick="hideModal('editQuestionModal')">✕</button>
+        <h3>Edit question</h3>
+        <input type="hidden" id="editQId">
+        <div class="fg"><label>Question</label><textarea id="editQText" rows="3"></textarea></div>
+        <div class="fg"><label>Option A</label><input type="text" id="editQA"></div>
+        <div class="fg"><label>Option B</label><input type="text" id="editQB"></div>
+        <div class="fg"><label>Option C</label><input type="text" id="editQC"></div>
+        <div class="fg"><label>Option D</label><input type="text" id="editQD"></div>
+        <div class="fg">
+            <label>Correct answer</label>
+            <select id="editQAnswer">
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+                <option value="d">D</option>
+            </select>
+        </div>
+        <div class="fg"><label>Explanation</label><textarea id="editQExplanation" rows="2"
+            style="width:100%;box-sizing:border-box;border:1.5px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:Poppins,sans-serif;font-size:13px"></textarea></div>
+        <div class="fg"><label>Year</label><input type="text" id="editQYear"></div>
+        <div class="fg">
+            <label>Mode</label>
+            <select id="editQMode">
+                <option value="both">Both</option>
+                <option value="exam">Exam only</option>
+                <option value="test">Test only</option>
+            </select>
+        </div>
+        <button class="admin-btn" onclick="saveEditQuestion()">Save changes</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="main.js"></script>
+<script src="super-admin.js"></script>
+</body>
+</html>

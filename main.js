@@ -77,8 +77,12 @@ const loginForm = document.getElementById('loginForm');
                 .single();
 
             sessionStorage.removeItem('splashShown');
-            if (profile && profile.role === 'admin') {
+            if (profile && profile.role === 'super_admin') {
+                window.location.href = 'super-admin-dashboard.html';
+            } else if (profile && profile.role === 'admin') {
                 window.location.href = 'admin-dashboard.html';
+            } else if (profile && profile.role === 'lecturer') {
+                window.location.href = 'lecturer-dashboard.html';
             } else {
                 window.location.href = 'splash.html';
             }
@@ -100,17 +104,20 @@ async function checkAlreadyLoggedIn() {
 
     const currentPage = window.location.pathname.split('/').pop();
     
-    // Don't redirect if already on the target page
-    if (profile && profile.role === 'admin') {
-        if (currentPage !== 'admin-dashboard.html') {
-            window.location.href = 'admin-dashboard.html';
-        }
-    } else {
+   // Don't redirect if already on the target page
+   if (profile && profile.role === 'super_admin') {
+    if (currentPage !== 'super-admin-dashboard.html') window.location.href = 'super-admin-dashboard.html';
+} else if (profile && profile.role === 'admin') {
+    if (currentPage !== 'admin-dashboard.html') window.location.href = 'admin-dashboard.html';
+} else if (profile && profile.role === 'lecturer') {
+    if (currentPage !== 'lecturer-dashboard.html') window.location.href = 'lecturer-dashboard.html';
+}  else {
         if (currentPage !== 'splash.html' && currentPage !== 'dashboard.html') {
             window.location.href = 'splash.html';
         }
     }
 }
+
 
 
 
@@ -544,8 +551,12 @@ async function initSplash() {
         .single();
 
     setTimeout(() => {
-        if (profile && profile.role === 'admin') {
+        if (profile && profile.role === 'super_admin') {
+            window.location.href = 'super-admin-dashboard.html';
+        } else if (profile && profile.role === 'admin') {
             window.location.href = 'admin-dashboard.html';
+        } else if (profile && profile.role === 'lecturer') {
+            window.location.href = 'lecturer-dashboard.html';
         } else {
             window.location.href = 'dashboard.html';
         }

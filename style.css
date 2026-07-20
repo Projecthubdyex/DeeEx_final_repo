@@ -3128,3 +3128,331 @@ body.dark-mode .sidebar-logo {
         display: none;
     }
 }
+
+/* ── Super Admin specific styles ── */
+
+/* Search and select inputs in toolbar */
+.sa-search {
+    border: 1.5px solid #b9d6f9;
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
+    color: #444;
+    background: white;
+    min-width: 200px;
+}
+
+.sa-search:focus {
+    outline: none;
+    border-color: #006DF2;
+}
+
+.sa-select {
+    border: 1.5px solid #b9d6f9;
+    border-radius: 50px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
+    color: #444;
+    background: white;
+    cursor: pointer;
+}
+
+.sa-select:focus {
+    outline: none;
+    border-color: #006DF2;
+}
+
+/* ── Role badges ── */
+.role-super_admin {
+    background: #f3e8ff;
+    color: #6b21a8;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+}
+
+.role-admin {
+    background: #fce8e8;
+    color: #a32d2d;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+}
+
+.role-lecturer {
+    background: #fef3c7;
+    color: #92400e;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+}
+
+.role-student {
+    background: #e8f5e9;
+    color: #2e7d32;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+}
+
+/* ── Admin toolbar spacing ── */
+.admin-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+/* ── Admin grid card ── */
+.admin-grid-card {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1.5px solid #b9d6f9;
+    border-radius: 16px;
+    padding: 18px 20px;
+    backdrop-filter: blur(8px);
+}
+
+.admin-grid-card h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0 0 4px;
+}
+
+.admin-grid-card p {
+    font-size: 12px;
+    color: #666;
+    margin: 0 0 4px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* ── Admin grid layout ── */
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+/* ── Admin table ── */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 10px 12px;
+    color: #1a4fa8;
+    font-weight: 600;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    border-bottom: 1.5px solid #d8eafc;
+}
+
+.admin-table td {
+    padding: 12px 12px;
+    color: #2a2a2a;
+    border-bottom: 0.5px solid #edf3fc;
+    vertical-align: middle;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background: rgba(0, 109, 242, 0.02);
+}
+
+/* ── Action buttons ── */
+.action-btn {
+    background: none;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 500;
+}
+
+.action-edit {
+    color: #006DF2;
+    background: #e6f1fb;
+}
+
+.action-delete {
+    color: #a32d2d;
+    background: #fce8e8;
+}
+
+.action-btn:hover {
+    opacity: 0.8;
+}
+
+/* ── Mode badges ── */
+.mode-badge {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 99px;
+    font-weight: 500;
+}
+
+.mode-exam { background: #fce8e8; color: #a32d2d; }
+.mode-test { background: #e8f5e9; color: #2e7d32; }
+.mode-both { background: #e6f1fb; color: #0c447c; }
+
+/* ── Admin badge in sidebar ── */
+.admin-badge {
+    font-size: 10px;
+    font-weight: 600;
+    background: #7c3aed;
+    color: white;
+    padding: 2px 8px;
+    border-radius: 99px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+/* ── Admin section animation ── */
+.admin-section {
+    animation: fadeUp 0.2s ease;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Admin btn ── */
+.admin-btn {
+    background: #006DF2;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-family: "Poppins", sans-serif;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.admin-btn:hover {
+    background: #0055c4;
+}
+
+.admin-btn-outline {
+    background: transparent;
+    color: #006DF2;
+    border: 1.5px solid #006DF2;
+}
+
+.admin-btn-outline:hover {
+    background: rgba(0, 109, 242, 0.07);
+}
+
+/* ── Modal ── */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.modal-overlay.active {
+    display: flex;
+}
+
+.modal-card {
+    background: white;
+    border-radius: 16px;
+    padding: 28px;
+    width: 100%;
+    max-width: 420px;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.modal-large {
+    max-width: 560px;
+}
+
+.modal-card h3 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #1a4fa8;
+    margin: 0 0 20px;
+}
+
+.modal-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    color: #666;
+}
+
+.modal-sub {
+    font-size: 12px;
+    color: #666;
+    margin: 0 0 12px;
+    line-height: 1.6;
+}
+
+/* ── Q text truncate in table ── */
+.q-text {
+    max-width: 280px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .admin-table th:nth-child(3),
+    .admin-table td:nth-child(3),
+    .admin-table th:nth-child(4),
+    .admin-table td:nth-child(4) {
+        display: none;
+    }
+
+    .sa-search {
+        min-width: 140px;
+    }
+}
+
+@media (max-width: 600px) {
+    .admin-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .sa-search,
+    .sa-select,
+    .admin-btn {
+        width: 100%;
+    }
+}
