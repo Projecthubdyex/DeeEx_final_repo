@@ -1,0 +1,406 @@
+// ============================
+// STATE
+// ============================
+let lecturerProfile = null;
+let assignedCourse = null;
+
+const COURSES = [
+    { id: 'mth-101-111', code: 'MTH 101/111', title: 'Elementary Mathematics I' },
+    { id: 'mth-103-121', code: 'MTH 103/121', title: 'Elementary Mathematics II' },
+    { id: 'mth-113',     code: 'MTH 113',     title: 'Intermediate Mathematics' },
+    { id: 'sta-111',     code: 'STA 111',     title: 'Descriptive Statistics' },
+    { id: 'sta-113',     code: 'STA 113',     title: 'Probability I' },
+    { id: 'phy-101',     code: 'PHY 101',     title: 'General Physics I' },
+    { id: 'phy-107',     code: 'PHY 107',     title: 'General Practical Physics' },
+    { id: 'phy-111',     code: 'PHY 111',     title: 'General Physics for Life Sciences' },
+    { id: 'chm-101',     code: 'CHM 101',     title: 'Principles of Chemistry' },
+    { id: 'chm-107',     code: 'CHM 107',     title: 'Principles of Inorganic Chemistry' },
+    { id: 'chm-171',     code: 'CHM 171',     title: 'Basic Practical Chemistry' },
+    { id: 'bio-103',     code: 'BIO 103',     title: 'Introduction to Genetics' },
+    { id: 'bio-107',     code: 'BIO 107',     title: 'General Practical Biology I' },
+    { id: 'bio-151',     code: 'BIO 151',     title: 'General Biology' },
+    { id: 'cos-101',     code: 'COS 101',     title: 'Introduction to Computer Science' },
+    { id: 'cos-141',     code: 'COS 141',     title: 'COS 141' },
+    { id: 'gsp-111',     code: 'GSP 111',     title: 'Communication in English I' },
+    { id: 'gsp-201',     code: 'GSP 201',     title: 'Peace and Conflict Studies I' },
+    { id: 'gst-111',     code: 'GST 111',     title: 'Communication in English' },
+];
+
+// ============================
+// HELPERS
+// ============================
+function showSection(name, el) {
+    document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
+    document.getElementById('section-' + name).style.display = 'block';
+    document.getElementById('sectionTitle').textContent =
+        name === 'overview' ? 'Overview' :
+        name === 'questions' ? 'My Questions' :
+        name === 'topics' ? 'My Topics' : 'Students';
+    document.querySelectorAll('.nav-link-item').forEach(l => l.classList.remove('active'));
+    if (el) el.classList.add('active');
+
+    if (name === 'questions') loadMyQuestions();
+    if (name === 'topics') loadMyTopics();
+    if (name === 'students') loadMyStudents();
+}
+
+function showModal(id) { document.getElementById(id).classList.add('active'); }
+function hideModal(id) { document.getElementById(id).classList.remove('active'); }
+
+function logout() {
+    supabaseClient.auth.signOut().then(() => window.location.href = 'login.html');
+}
+
+function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('active');
+}
+
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+}
+
+// ============================
+// INIT
+// ============================
+document.addEventListener('DOMContentLoaded', async () => {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (!session) { window.location.href = 'login.html'; return; }
+
+    const { data: profile } = await supabaseClient
+        .from('profiles')
+        .select('*')
+        .eq('id', session.user.id)
+        .single();
+
+    if (!profile || profile.role !== 'lecturer') {
+        alert('Access denied.');
+        window.location.href = 'login.html';
+        return;
+    }
+
+    lecturerProfile = profile;
+    assignedCourse = COURSES.find(c => c.id === profile.assigned_course);
+
+    // Sidebar
+    const initials = profile.full_name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+    document.getElementById('lecturerAvatar').textContent = initials;
+    document.getElementById('lecturerName').textContent = profile.full_name;
+    document.getElementById('lecturerCourse').textContent = assignedCourse
+        ? assignedCourse.code : 'No course assigned';
+    document.getElementById('lecturerCourseMeta').textContent = assignedCourse
+        ? `${assignedCourse.code} — ${assignedCourse.title}` : 'Lecturer Panel';
+
+    if (!assignedCourse) {
+        document.getElementById('courseInfo').innerHTML =
+            '<p style="color:#a32d2d;font-size:13px">You have not been assigned a course yet. Please contact your admin.</p>';
+        return;
+    }
+
+    // Populate topic modal info
+    const el = document.getElementById('modalCourseName');
+    const el2 = document.getElementById('topicModalCourseName');
+    if (el) el.textContent = `Course: ${assignedCourse.code} — ${assignedCourse.title}`;
+    if (el2) el2.textContent = `Course: ${assignedCourse.code} — ${assignedCourse.title}`;
+
+    loadOverview();
+    loadTopicDropdown();
+});
+
+// ============================
+// OVERVIEW
+// ============================
+async function loadOverview() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    const [
+        { data: questions },
+        { data: topics },
+        { data: sessions }
+    ] = await Promise.all([
+        supabaseClient.from('questions').select('id').eq('course_id', assignedCourse.id).eq('added_by', session.user.id),
+        supabaseClient.from('topics').select('id').eq('course_id', assignedCourse.id),
+        supabaseClient.from('assessment_sessions').select('score, total_questions').eq('course_id', assignedCourse.id).eq('completed', true)
+    ]);
+
+    document.getElementById('lStatQuestions').textContent = questions?.length || 0;
+    document.getElementById('lStatTopics').textContent = topics?.length || 0;
+    document.getElementById('lStatSessions').textContent = sessions?.length || 0;
+
+    if (sessions && sessions.length > 0) {
+        const avg = Math.round(
+            sessions.reduce((sum, s) => sum + (s.score / s.total_questions * 100), 0) / sessions.length
+        );
+        document.getElementById('lStatAvg').textContent = avg + '%';
+    } else {
+        document.getElementById('lStatAvg').textContent = '—';
+    }
+
+    // Course info card
+    document.getElementById('courseInfo').innerHTML = `
+        <div style="display:flex;align-items:center;gap:16px">
+            <div>
+                <h3 style="font-size:18px;font-weight:600;color:#1a4fa8;margin:0 0 4px">${assignedCourse.code}</h3>
+                <p style="font-size:14px;color:#444;margin:0 0 12px">${assignedCourse.title}</p>
+                <p style="font-size:13px;color:#666;margin:0">
+                    You are the assigned lecturer for this course. You can add questions and topics,
+                    and view how students are performing.
+                </p>
+            </div>
+        </div>
+    `;
+}
+
+// ============================
+// LOAD TOPIC DROPDOWN
+// ============================
+async function loadTopicDropdown() {
+    if (!assignedCourse) return;
+
+    const { data: topics } = await supabaseClient
+        .from('topics')
+        .select('id, title')
+        .eq('course_id', assignedCourse.id);
+
+    ['qTopicId', 'lFilterTopic'].forEach(id => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.innerHTML = id === 'qTopicId' ? '<option value="">No topic</option>' : '<option value="">All topics</option>';
+        topics?.forEach(t => {
+            const opt = document.createElement('option');
+            opt.value = t.id;
+            opt.textContent = t.title;
+            el.appendChild(opt);
+        });
+    });
+}
+
+// ============================
+// QUESTIONS
+// ============================
+async function loadMyQuestions() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const topicFilter = document.getElementById('lFilterTopic')?.value;
+    const modeFilter = document.getElementById('lFilterMode')?.value;
+
+    let query = supabaseClient
+        .from('questions')
+        .select('*, topics(title)')
+        .eq('course_id', assignedCourse.id)
+        .order('created_at', { ascending: false });
+
+    if (topicFilter) query = query.eq('topic_id', topicFilter);
+    if (modeFilter) query = query.eq('mode', modeFilter);
+
+    const { data: questions } = await query;
+    const tbody = document.getElementById('myQuestionsTable');
+    if (!tbody) return;
+
+    if (!questions || questions.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">No questions yet. Add your first one!</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = questions.map(q => `
+        <tr>
+            <td class="q-text">${q.question_text}</td>
+            <td style="font-size:12px;color:#666">${q.topics?.title || '—'}</td>
+            <td><span class="mode-badge mode-${q.mode}">${q.mode}</span></td>
+            <td style="font-size:12px;color:#666">${q.year || '—'}</td>
+            <td>
+                <button class="action-btn action-delete" onclick="deleteQuestion('${q.id}')">Delete</button>
+            </td>
+        </tr>
+    `).join('');
+}
+
+async function submitQuestion() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const get = id => document.getElementById(id)?.value.trim();
+
+    const questionText = get('qText');
+    const optionA = get('qA'), optionB = get('qB'), optionC = get('qC'), optionD = get('qD');
+    const topicId = document.getElementById('qTopicId')?.value || null;
+
+    if (!questionText || !optionA || !optionB || !optionC || !optionD) {
+        alert('Please fill in all required fields.'); return;
+    }
+
+    const { error } = await supabaseClient.from('questions').insert({
+        course_id: assignedCourse.id,
+        course_code: assignedCourse.code,
+        course_title: assignedCourse.title,
+        topic_id: topicId || null,
+        question_text: questionText,
+        option_a: optionA, option_b: optionB, option_c: optionC, option_d: optionD,
+        correct_answer: get('qAnswer'),
+        explanation: get('qExplanation') || null,
+        year: get('qYear') || null,
+        mode: get('qMode') || 'both',
+        time_limit: parseInt(document.getElementById('qTimeLimit')?.value) || 30,
+        department: 'all',
+        added_by: session.user.id
+    });
+
+    if (error) { alert('Error: ' + error.message); return; }
+
+    alert('✓ Question added!');
+    hideModal('addQuestionModal');
+    ['qText','qA','qB','qC','qD','qExplanation','qYear'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+    });
+
+    loadMyQuestions();
+    loadOverview();
+}
+
+async function deleteQuestion(id) {
+    if (!confirm('Delete this question?')) return;
+    const { error } = await supabaseClient.from('questions').delete().eq('id', id);
+    if (error) { alert('Error: ' + error.message); return; }
+    loadMyQuestions();
+    loadOverview();
+}
+
+async function uploadCSV() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const file = document.getElementById('csvFile')?.files[0];
+    if (!file) { alert('Please select a CSV file.'); return; }
+
+    const text = await file.text();
+    const lines = text.trim().split('\n');
+    const rows = lines.slice(1);
+
+    const questions = rows.map(row => {
+        const cols = row.split(',').map(c => c.trim().replace(/^"|"$/g, ''));
+        return {
+            course_id: assignedCourse.id,
+            course_code: assignedCourse.code,
+            course_title: assignedCourse.title,
+            question_text: cols[0],
+            option_a: cols[1], option_b: cols[2], option_c: cols[3], option_d: cols[4],
+            correct_answer: cols[5],
+            explanation: cols[6] || null,
+            year: cols[7] || null,
+            mode: cols[8] || 'both',
+            time_limit: parseInt(cols[9]) || 30,
+            department: 'all',
+            added_by: session.user.id
+        };
+    }).filter(q => q.question_text);
+
+    const { error } = await supabaseClient.from('questions').insert(questions);
+    if (error) { alert('Upload failed: ' + error.message); return; }
+
+    alert(`✓ ${questions.length} questions uploaded!`);
+    hideModal('csvModal');
+    loadMyQuestions();
+    loadOverview();
+}
+
+// ============================
+// TOPICS
+// ============================
+async function loadMyTopics() {
+    const { data: topics } = await supabaseClient
+        .from('topics')
+        .select('*')
+        .eq('course_id', assignedCourse.id)
+        .order('created_at', { ascending: false });
+
+    const grid = document.getElementById('myTopicsGrid');
+    if (!grid) return;
+
+    if (!topics || topics.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">No topics yet. Add your first topic!</p>';
+        return;
+    }
+
+    grid.innerHTML = topics.map(t => `
+        <div class="admin-grid-card">
+            <h4>${t.title}</h4>
+            ${t.description ? `<p style="color:#888;font-size:12px;margin-top:4px">${t.description}</p>` : ''}
+            <div class="card-actions" style="margin-top:12px">
+                <button class="action-btn action-delete" onclick="deleteTopic('${t.id}')">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function submitTopic() {
+    const title = document.getElementById('tTitle')?.value.trim();
+    const desc = document.getElementById('tDesc')?.value.trim();
+
+    if (!title) { alert('Topic title is required.'); return; }
+
+    const { error } = await supabaseClient.from('topics').insert({
+        course_id: assignedCourse.id,
+        title,
+        description: desc || null
+    });
+
+    if (error) { alert('Error: ' + error.message); return; }
+
+    alert('✓ Topic added!');
+    hideModal('addTopicModal');
+    document.getElementById('tTitle').value = '';
+    document.getElementById('tDesc').value = '';
+
+    loadMyTopics();
+    loadTopicDropdown();
+    loadOverview();
+}
+
+async function deleteTopic(id) {
+    if (!confirm('Delete this topic?')) return;
+    const { error } = await supabaseClient.from('topics').delete().eq('id', id);
+    if (error) { alert('Error: ' + error.message); return; }
+    loadMyTopics();
+    loadTopicDropdown();
+    loadOverview();
+}
+
+// ============================
+// STUDENTS
+// ============================
+async function loadMyStudents() {
+    const { data: progress } = await supabaseClient
+        .from('progress')
+        .select('user_id, average_score, sessions_taken')
+        .eq('course_id', assignedCourse.id)
+        .order('average_score', { ascending: false });
+
+    const tbody = document.getElementById('myStudentsTable');
+    if (!progress || progress.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">No students have taken this course yet.</td></tr>';
+        return;
+    }
+
+    const userIds = progress.map(p => p.user_id);
+    const { data: profiles } = await supabaseClient
+        .from('profiles')
+        .select('id, full_name, university')
+        .in('id', userIds);
+
+    const profileMap = {};
+    profiles?.forEach(p => { profileMap[p.id] = p; });
+
+    tbody.innerHTML = progress.map((p, i) => {
+        const profile = profileMap[p.user_id];
+        const avg = Math.round(p.average_score);
+        const color = avg >= 70 ? '#2e7d32' : avg >= 50 ? '#006DF2' : '#a32d2d';
+        const rank = i + 1;
+        const rankLabel = rank === 1 ? '🥇' : rank === 2 ? '🥈' : rank === 3 ? '🥉' : `#${rank}`;
+
+        return `
+            <tr>
+                <td>${rankLabel} ${profile?.full_name || '—'}</td>
+                <td style="font-size:12px;color:#666">${profile?.university || '—'}</td>
+                <td style="font-weight:600;color:${color}">${avg}%</td>
+                <td style="color:#666">${p.sessions_taken}</td>
+            </tr>
+        `;
+    }).join('');
+}

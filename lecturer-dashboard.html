@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DeeEx — Lecturer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dash-body">
+
+<div class="overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">DeeEx <span class="admin-badge" style="background:#92400e">Lecturer</span></div>
+    <nav class="sidebar-nav">
+        <a href="#" class="nav-link-item active" onclick="showSection('overview', this)">📊 Overview</a>
+        <a href="#" class="nav-link-item" onclick="showSection('questions', this)">❓ My Questions</a>
+        <a href="#" class="nav-link-item" onclick="showSection('topics', this)">📚 My Topics</a>
+        <a href="#" class="nav-link-item" onclick="showSection('students', this)">👥 Students</a>
+    </nav>
+    <div class="sidebar-bottom">
+        <div class="user-row">
+            <div class="user-avatar" id="lecturerAvatar">L</div>
+            <div class="user-info">
+                <p id="lecturerName">Loading...</p>
+                <span id="lecturerCourse">—</span>
+            </div>
+        </div>
+        <button class="logout-btn" onclick="logout()">🚪 Log out</button>
+    </div>
+</aside>
+
+<div class="main-wrapper">
+    <div class="topbar">
+        <div class="topbar-left">
+            <p class="meta" id="lecturerCourseMeta">Lecturer Panel</p>
+            <h1 id="sectionTitle">Overview</h1>
+        </div>
+        <div class="topbar-right">
+            <div class="icon-btn hamburger-btn" onclick="openSidebar()">☰</div>
+        </div>
+    </div>
+
+    <!-- OVERVIEW -->
+    <div id="section-overview" class="admin-section">
+        <div class="stats-grid" style="margin-bottom:24px">
+            <div class="stat-card">
+                <div class="s-label">My questions</div>
+                <div class="s-value" id="lStatQuestions">—</div>
+                <div class="s-sub">Added by me</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">My topics</div>
+                <div class="s-value" id="lStatTopics">—</div>
+                <div class="s-sub">Created topics</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Sessions taken</div>
+                <div class="s-value" id="lStatSessions">—</div>
+                <div class="s-sub">On my course</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">Avg score</div>
+                <div class="s-value" id="lStatAvg">—</div>
+                <div class="s-sub">My course average</div>
+            </div>
+        </div>
+
+        <div class="section-label">My assigned course</div>
+        <div class="dash-card">
+            <div id="courseInfo">
+                <p class="empty-msg">Loading course info...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- QUESTIONS -->
+    <div id="section-questions" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addQuestionModal')">+ Add question</button>
+            <button class="admin-btn admin-btn-outline" onclick="showModal('csvModal')">⬆ Upload CSV</button>
+            <select id="lFilterTopic" class="sa-select" onchange="loadMyQuestions()">
+                <option value="">All topics</option>
+            </select>
+            <select id="lFilterMode" class="sa-select" onchange="loadMyQuestions()">
+                <option value="">All modes</option>
+                <option value="exam">Exam</option>
+                <option value="test">Test</option>
+                <option value="both">Both</option>
+            </select>
+        </div>
+        <div class="dash-card">
+            <table class="admin-table">
+                <thead>
+                    <tr><th>Question</th><th>Topic</th><th>Mode</th><th>Year</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="myQuestionsTable">
+                    <tr><td colspan="5" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- TOPICS -->
+    <div id="section-topics" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addTopicModal')">+ Add topic</button>
+        </div>
+        <div class="admin-grid" id="myTopicsGrid">
+            <p class="empty-msg">Loading topics...</p>
+        </div>
+    </div>
+
+    <!-- STUDENTS -->
+    <div id="section-students" class="admin-section" style="display:none">
+        <div class="section-label">Students who have taken my course</div>
+        <div class="dash-card">
+            <table class="admin-table">
+                <thead>
+                    <tr><th>Name</th><th>University</th><th>Avg score</th><th>Sessions</th></tr>
+                </thead>
+                <tbody id="myStudentsTable">
+                    <tr><td colspan="4" class="empty-msg">Loading...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- ADD QUESTION MODAL -->
+<div class="modal-overlay" id="addQuestionModal">
+    <div class="modal-card modal-large">
+        <button class="modal-close" onclick="hideModal('addQuestionModal')">✕</button>
+        <h3>Add question</h3>
+        <p class="modal-sub" id="modalCourseName"></p>
+        <div class="fg"><label>Topic (optional)</label><select id="qTopicId"><option value="">No topic</option></select></div>
+        <div class="fg"><label>Question</label><textarea id="qText" rows="3" placeholder="Enter question"></textarea></div>
+        <div class="fg"><label>Option A</label><input type="text" id="qA" placeholder="Option A"></div>
+        <div class="fg"><label>Option B</label><input type="text" id="qB" placeholder="Option B"></div>
+        <div class="fg"><label>Option C</label><input type="text" id="qC" placeholder="Option C"></div>
+        <div class="fg"><label>Option D</label><input type="text" id="qD" placeholder="Option D"></div>
+        <div class="fg"><label>Correct answer</label><select id="qAnswer"><option value="a">A</option><option value="b">B</option><option value="c">C</option><option value="d">D</option></select></div>
+        <div class="fg"><label>Explanation (optional)</label><textarea id="qExplanation" rows="2" placeholder="Explain the correct answer"></textarea></div>
+        <div class="fg"><label>Year (optional)</label><input type="text" id="qYear" placeholder="e.g. 2022"></div>
+        <div class="fg"><label>Mode</label><select id="qMode"><option value="both">Both</option><option value="exam">Exam only</option><option value="test">Test only</option></select></div>
+        <div class="fg"><label>Time limit (minutes)</label><input type="number" id="qTimeLimit" value="30" min="1"></div>
+        <button class="admin-btn" onclick="submitQuestion()">Save question</button>
+    </div>
+</div>
+
+<!-- CSV MODAL -->
+<div class="modal-overlay" id="csvModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('csvModal')">✕</button>
+        <h3>Upload questions via CSV</h3>
+        <p class="modal-sub">Columns: question_text, option_a, option_b, option_c, option_d, correct_answer, explanation, year, mode, time_limit</p>
+        <p class="modal-sub" style="color:#006DF2">Course will be set automatically to your assigned course.</p>
+        <div class="fg" style="margin-top:12px"><input type="file" id="csvFile" accept=".csv"></div>
+        <button class="admin-btn" onclick="uploadCSV()">Upload</button>
+    </div>
+</div>
+
+<!-- ADD TOPIC MODAL -->
+<div class="modal-overlay" id="addTopicModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('addTopicModal')">✕</button>
+        <h3>Add topic</h3>
+        <p class="modal-sub" id="topicModalCourseName"></p>
+        <div class="fg"><label>Topic title</label><input type="text" id="tTitle" placeholder="e.g. Differentiation"></div>
+        <div class="fg"><label>Description (optional)</label><textarea id="tDesc" rows="2" placeholder="Brief description" style="width:100%;box-sizing:border-box;border:1px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:inherit;resize:vertical"></textarea></div>
+        <button class="admin-btn" onclick="submitTopic()">Save topic</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="lecturer.js"></script>
+</body>
+</html>
