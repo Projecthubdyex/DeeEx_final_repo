@@ -133,7 +133,7 @@ async function forgotPassword() {
     }
 
     const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/reset-password.html'
+        redirectTo: 'https://deeex-final-repo.vercel.app/reset-password.html'
     });
 
     if (error) {
@@ -178,7 +178,7 @@ if (resetForm) {
 async function loginWithGoogle() {
      const { error } = await supabaseClient.auth.signInWithOAuth({
          provider: 'google',
-         options: { redirectTo: window.location.origin + '/splash.html' }
+         options: { redirectTo: 'https://deeex-final-repo.vercel.app/splash.html' }
      });
      if (error) alert(error.message);
  }
@@ -225,7 +225,7 @@ if (signupForm) {
 async function signupWithGoogle() {
     const { error } = await supabaseClient.auth.signInWithOAuth({
         provider: 'google',
-        options: { redirectTo: window.location.origin + '/splash.html' }
+        options: { redirectTo: 'https://deeex-final-repo.vercel.app/splash.html' }
     });
     if (error) alert(error.message);
 }
