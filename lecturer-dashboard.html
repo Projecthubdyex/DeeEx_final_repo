@@ -15,8 +15,10 @@
     <div class="sidebar-logo">DeeEx <span class="admin-badge" style="background:#92400e">Lecturer</span></div>
     <nav class="sidebar-nav">
         <a href="#" class="nav-link-item active" onclick="showSection('overview', this)">📊 Overview</a>
-        <a href="#" class="nav-link-item" onclick="showSection('questions', this)">❓ My Questions</a>
-        <a href="#" class="nav-link-item" onclick="showSection('topics', this)">📚 My Topics</a>
+        <a href="#" class="nav-link-item" onclick="showSection('questions', this)">❓ Questions</a>
+        <a href="#" class="nav-link-item" onclick="showSection('topics', this)">📚 Topics</a>
+        <a href="#" class="nav-link-item" onclick="showSection('notes', this)">📝 Notes</a>
+        <a href="#" class="nav-link-item" onclick="showSection('videos', this)">🎬 Videos</a>
         <a href="#" class="nav-link-item" onclick="showSection('students', this)">👥 Students</a>
     </nav>
     <div class="sidebar-bottom">
@@ -56,6 +58,16 @@
                 <div class="s-sub">Created topics</div>
             </div>
             <div class="stat-card">
+                <div class="s-label">My notes</div>
+                <div class="s-value" id="lStatNotes">—</div>
+                <div class="s-sub">Published notes</div>
+            </div>
+            <div class="stat-card">
+                <div class="s-label">My videos</div>
+                <div class="s-value" id="lStatVideos">—</div>
+                <div class="s-sub">Published videos</div>
+            </div>
+            <div class="stat-card">
                 <div class="s-label">Sessions taken</div>
                 <div class="s-value" id="lStatSessions">—</div>
                 <div class="s-sub">On my course</div>
@@ -66,12 +78,9 @@
                 <div class="s-sub">My course average</div>
             </div>
         </div>
-
         <div class="section-label">My assigned course</div>
         <div class="dash-card">
-            <div id="courseInfo">
-                <p class="empty-msg">Loading course info...</p>
-            </div>
+            <div id="courseInfo"><p class="empty-msg">Loading...</p></div>
         </div>
     </div>
 
@@ -112,9 +121,34 @@
         </div>
     </div>
 
+    <!-- NOTES -->
+    <div id="section-notes" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addNoteModal')">+ Add note</button>
+            <select id="lNoteTopicFilter" class="sa-select" onchange="loadMyNotes()">
+                <option value="">All topics</option>
+            </select>
+        </div>
+        <div id="myNotesList">
+            <p class="empty-msg">No notes yet. Add your first note!</p>
+        </div>
+    </div>
+
+    <!-- VIDEOS -->
+    <div id="section-videos" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addVideoModal')">+ Add video</button>
+            <select id="lVideoTopicFilter" class="sa-select" onchange="loadMyVideos()">
+                <option value="">All topics</option>
+            </select>
+        </div>
+        <div id="myVideosList">
+            <p class="empty-msg">No videos yet. Add your first video!</p>
+        </div>
+    </div>
+
     <!-- STUDENTS -->
     <div id="section-students" class="admin-section" style="display:none">
-        <div class="section-label">Students who have taken my course</div>
         <div class="dash-card">
             <table class="admin-table">
                 <thead>
@@ -155,7 +189,7 @@
         <button class="modal-close" onclick="hideModal('csvModal')">✕</button>
         <h3>Upload questions via CSV</h3>
         <p class="modal-sub">Columns: question_text, option_a, option_b, option_c, option_d, correct_answer, explanation, year, mode, time_limit</p>
-        <p class="modal-sub" style="color:#006DF2">Course will be set automatically to your assigned course.</p>
+        <p class="modal-sub" style="color:#006DF2">Course auto-set to your assigned course.</p>
         <div class="fg" style="margin-top:12px"><input type="file" id="csvFile" accept=".csv"></div>
         <button class="admin-btn" onclick="uploadCSV()">Upload</button>
     </div>
@@ -170,6 +204,60 @@
         <div class="fg"><label>Topic title</label><input type="text" id="tTitle" placeholder="e.g. Differentiation"></div>
         <div class="fg"><label>Description (optional)</label><textarea id="tDesc" rows="2" placeholder="Brief description" style="width:100%;box-sizing:border-box;border:1px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:inherit;resize:vertical"></textarea></div>
         <button class="admin-btn" onclick="submitTopic()">Save topic</button>
+    </div>
+</div>
+
+<!-- ADD NOTE MODAL -->
+<div class="modal-overlay" id="addNoteModal">
+    <div class="modal-card modal-large">
+        <button class="modal-close" onclick="hideModal('addNoteModal')">✕</button>
+        <h3>Add note</h3>
+        <div class="fg"><label>Title</label><input type="text" id="nTitle" placeholder="Note title"></div>
+        <div class="fg"><label>Topic (optional)</label><select id="nTopicId"><option value="">No topic</option></select></div>
+        <div class="fg">
+            <label>Note type</label>
+            <select id="nType" onchange="toggleNoteType()">
+                <option value="text">Type note</option>
+                <option value="file">Upload file (PDF/Word)</option>
+            </select>
+        </div>
+        <div id="noteTextSection" class="fg">
+            <label>Content</label>
+            <textarea id="nContent" rows="8" placeholder="Type your note content here..." 
+                style="width:100%;box-sizing:border-box;border:1px solid #b9d6f9;border-radius:10px;padding:10px 14px;font-family:inherit;resize:vertical"></textarea>
+        </div>
+        <div id="noteFileSection" class="fg" style="display:none">
+            <label>Upload PDF or Word file</label>
+            <input type="file" id="nFile" accept=".pdf,.doc,.docx">
+        </div>
+        <button class="admin-btn" onclick="submitNote()">Save note</button>
+    </div>
+</div>
+
+<!-- ADD VIDEO MODAL -->
+<div class="modal-overlay" id="addVideoModal">
+    <div class="modal-card modal-large">
+        <button class="modal-close" onclick="hideModal('addVideoModal')">✕</button>
+        <h3>Add video</h3>
+        <div class="fg"><label>Title</label><input type="text" id="vTitle" placeholder="Video title"></div>
+        <div class="fg"><label>Topic (optional)</label><select id="vTopicId"><option value="">No topic</option></select></div>
+        <div class="fg">
+            <label>Video type</label>
+            <select id="vType" onchange="toggleVideoType()">
+                <option value="youtube">YouTube link</option>
+                <option value="drive">Google Drive link</option>
+                <option value="upload">Upload video file</option>
+            </select>
+        </div>
+        <div id="videoLinkSection" class="fg">
+            <label>Video URL</label>
+            <input type="text" id="vUrl" placeholder="Paste YouTube or Google Drive link">
+        </div>
+        <div id="videoFileSection" class="fg" style="display:none">
+            <label>Upload video file</label>
+            <input type="file" id="vFile" accept="video/*">
+        </div>
+        <button class="admin-btn" onclick="submitVideo()">Save video</button>
     </div>
 </div>
 

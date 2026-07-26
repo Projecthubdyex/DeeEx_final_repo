@@ -34,13 +34,17 @@ function showSection(name, el) {
     document.getElementById('section-' + name).style.display = 'block';
     document.getElementById('sectionTitle').textContent =
         name === 'overview' ? 'Overview' :
-        name === 'questions' ? 'My Questions' :
-        name === 'topics' ? 'My Topics' : 'Students';
+        name === 'questions' ? 'Questions' :
+        name === 'topics' ? 'Topics' :
+        name === 'notes' ? 'Notes' :
+        name === 'videos' ? 'Videos' : 'Students';
     document.querySelectorAll('.nav-link-item').forEach(l => l.classList.remove('active'));
     if (el) el.classList.add('active');
 
     if (name === 'questions') loadMyQuestions();
     if (name === 'topics') loadMyTopics();
+    if (name === 'notes') loadMyNotes();
+    if (name === 'videos') loadMyVideos();
     if (name === 'students') loadMyStudents();
 }
 
@@ -108,24 +112,27 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadTopicDropdown();
 });
 
-// ============================
-// OVERVIEW
-// ============================
 async function loadOverview() {
     const { data: { session } } = await supabaseClient.auth.getSession();
 
     const [
         { data: questions },
         { data: topics },
+        { data: notes },
+        { data: videos },
         { data: sessions }
     ] = await Promise.all([
         supabaseClient.from('questions').select('id').eq('course_id', assignedCourse.id).eq('added_by', session.user.id),
         supabaseClient.from('topics').select('id').eq('course_id', assignedCourse.id),
+        supabaseClient.from('notes').select('id').eq('course_id', assignedCourse.id).eq('added_by', session.user.id),
+        supabaseClient.from('videos').select('id').eq('course_id', assignedCourse.id).eq('added_by', session.user.id),
         supabaseClient.from('assessment_sessions').select('score, total_questions').eq('course_id', assignedCourse.id).eq('completed', true)
     ]);
 
     document.getElementById('lStatQuestions').textContent = questions?.length || 0;
     document.getElementById('lStatTopics').textContent = topics?.length || 0;
+    document.getElementById('lStatNotes').textContent = notes?.length || 0;
+    document.getElementById('lStatVideos').textContent = videos?.length || 0;
     document.getElementById('lStatSessions').textContent = sessions?.length || 0;
 
     if (sessions && sessions.length > 0) {
@@ -137,24 +144,15 @@ async function loadOverview() {
         document.getElementById('lStatAvg').textContent = '—';
     }
 
-    // Course info card
     document.getElementById('courseInfo').innerHTML = `
-        <div style="display:flex;align-items:center;gap:16px">
-            <div>
-                <h3 style="font-size:18px;font-weight:600;color:#1a4fa8;margin:0 0 4px">${assignedCourse.code}</h3>
-                <p style="font-size:14px;color:#444;margin:0 0 12px">${assignedCourse.title}</p>
-                <p style="font-size:13px;color:#666;margin:0">
-                    You are the assigned lecturer for this course. You can add questions and topics,
-                    and view how students are performing.
-                </p>
-            </div>
+        <div>
+            <h3 style="font-size:18px;font-weight:600;color:#1a4fa8;margin:0 0 4px">${assignedCourse.code}</h3>
+            <p style="font-size:14px;color:#444;margin:0 0 12px">${assignedCourse.title}</p>
+            <p style="font-size:13px;color:#666;margin:0">You are the assigned lecturer for this course. Add questions, topics, notes and videos for your students.</p>
         </div>
     `;
 }
 
-// ============================
-// LOAD TOPIC DROPDOWN
-// ============================
 async function loadTopicDropdown() {
     if (!assignedCourse) return;
 
@@ -163,10 +161,11 @@ async function loadTopicDropdown() {
         .select('id, title')
         .eq('course_id', assignedCourse.id);
 
-    ['qTopicId', 'lFilterTopic'].forEach(id => {
+    ['qTopicId', 'nTopicId', 'vTopicId', 'lFilterTopic', 'lNoteTopicFilter', 'lVideoTopicFilter'].forEach(id => {
         const el = document.getElementById(id);
         if (!el) return;
-        el.innerHTML = id === 'qTopicId' ? '<option value="">No topic</option>' : '<option value="">All topics</option>';
+        const isFilter = id.includes('Filter');
+        el.innerHTML = isFilter ? '<option value="">All topics</option>' : '<option value="">No topic</option>';
         topics?.forEach(t => {
             const opt = document.createElement('option');
             opt.value = t.id;
@@ -403,4 +402,201 @@ async function loadMyStudents() {
             </tr>
         `;
     }).join('');
+}
+
+// ============================
+// NOTES
+// ============================
+function toggleNoteType() {
+    const type = document.getElementById('nType').value;
+    document.getElementById('noteTextSection').style.display = type === 'text' ? 'block' : 'none';
+    document.getElementById('noteFileSection').style.display = type === 'file' ? 'block' : 'none';
+}
+
+async function loadMyNotes() {
+    const topicFilter = document.getElementById('lNoteTopicFilter')?.value;
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    let query = supabaseClient.from('notes').select('*, topics(title)')
+        .eq('course_id', assignedCourse.id)
+        .eq('added_by', session.user.id)
+        .order('created_at', { ascending: false });
+
+    if (topicFilter) query = query.eq('topic_id', topicFilter);
+
+    const { data: notes } = await query;
+    const el = document.getElementById('myNotesList');
+
+    if (!notes || notes.length === 0) {
+        el.innerHTML = '<p class="empty-msg">No notes yet. Add your first note!</p>';
+        return;
+    }
+
+    el.innerHTML = notes.map(n => `
+        <div class="content-card">
+            <div class="content-card-header">
+                <div>
+                    <div class="content-card-title">📝 ${n.title}</div>
+                    <div class="content-card-meta">${n.topics?.title || 'No topic'} · ${new Date(n.created_at).toLocaleDateString('en-GB')}</div>
+                </div>
+                <button class="action-btn action-delete" onclick="deleteNote('${n.id}')">Delete</button>
+            </div>
+            ${n.content ? `<div class="content-card-body">${n.content.substring(0, 200)}${n.content.length > 200 ? '...' : ''}</div>` : ''}
+            ${n.file_url ? `<a href="${n.file_url}" target="_blank" class="content-download-btn">⬇ Download ${n.file_type || 'file'}</a>` : ''}
+        </div>
+    `).join('');
+}
+
+async function submitNote() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const title = document.getElementById('nTitle')?.value.trim();
+    const topicId = document.getElementById('nTopicId')?.value || null;
+    const type = document.getElementById('nType')?.value;
+
+    if (!title) { alert('Note title is required.'); return; }
+
+    let content = null;
+    let fileUrl = null;
+    let fileType = null;
+
+    if (type === 'text') {
+        content = document.getElementById('nContent')?.value.trim();
+        if (!content) { alert('Please enter note content.'); return; }
+    } else {
+        const file = document.getElementById('nFile')?.files[0];
+        if (!file) { alert('Please select a file.'); return; }
+
+        const filePath = `${session.user.id}/${Date.now()}_${file.name}`;
+        const { data, error } = await supabaseClient.storage
+            .from('notes')
+            .upload(filePath, file);
+
+        if (error) { alert('Upload failed: ' + error.message); return; }
+
+        const { data: urlData } = supabaseClient.storage.from('notes').getPublicUrl(filePath);
+        fileUrl = urlData.publicUrl;
+        fileType = file.name.split('.').pop().toUpperCase();
+    }
+
+    const { error } = await supabaseClient.from('notes').insert({
+        course_id: assignedCourse.id,
+        topic_id: topicId || null,
+        title,
+        content: content || null,
+        file_url: fileUrl || null,
+        file_type: fileType || null,
+        added_by: session.user.id
+    });
+
+    if (error) { alert('Error: ' + error.message); return; }
+
+    alert('✓ Note added!');
+    hideModal('addNoteModal');
+    document.getElementById('nTitle').value = '';
+    document.getElementById('nContent').value = '';
+    loadMyNotes();
+    loadOverview();
+}
+
+async function deleteNote(id) {
+    if (!confirm('Delete this note?')) return;
+    const { error } = await supabaseClient.from('notes').delete().eq('id', id);
+    if (error) { alert('Error: ' + error.message); return; }
+    loadMyNotes();
+    loadOverview();
+}
+
+// ============================
+// VIDEOS
+// ============================
+function toggleVideoType() {
+    const type = document.getElementById('vType').value;
+    document.getElementById('videoLinkSection').style.display = type !== 'upload' ? 'block' : 'none';
+    document.getElementById('videoFileSection').style.display = type === 'upload' ? 'block' : 'none';
+}
+
+async function loadMyVideos() {
+    const topicFilter = document.getElementById('lVideoTopicFilter')?.value;
+    const { data: { session } } = await supabaseClient.auth.getSession();
+
+    let query = supabaseClient.from('videos').select('*, topics(title)')
+        .eq('course_id', assignedCourse.id)
+        .eq('added_by', session.user.id)
+        .order('created_at', { ascending: false });
+
+    if (topicFilter) query = query.eq('topic_id', topicFilter);
+
+    const { data: videos } = await query;
+    const el = document.getElementById('myVideosList');
+
+    if (!videos || videos.length === 0) {
+        el.innerHTML = '<p class="empty-msg">No videos yet. Add your first video!</p>';
+        return;
+    }
+
+    el.innerHTML = videos.map(v => `
+        <div class="content-card">
+            <div class="content-card-header">
+                <div>
+                    <div class="content-card-title">🎬 ${v.title}</div>
+                    <div class="content-card-meta">${v.topics?.title || 'No topic'} · ${v.video_type} · ${new Date(v.created_at).toLocaleDateString('en-GB')}</div>
+                </div>
+                <button class="action-btn action-delete" onclick="deleteVideo('${v.id}')">Delete</button>
+            </div>
+            ${v.video_url ? `<a href="${v.video_url}" target="_blank" class="content-download-btn">▶ View video</a>` : ''}
+        </div>
+    `).join('');
+}
+
+async function submitVideo() {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    const title = document.getElementById('vTitle')?.value.trim();
+    const topicId = document.getElementById('vTopicId')?.value || null;
+    const type = document.getElementById('vType')?.value;
+
+    if (!title) { alert('Video title is required.'); return; }
+
+    let videoUrl = null;
+    let videoType = type;
+
+    if (type === 'upload') {
+        const file = document.getElementById('vFile')?.files[0];
+        if (!file) { alert('Please select a video file.'); return; }
+
+        const filePath = `${session.user.id}/${Date.now()}_${file.name}`;
+        const { error } = await supabaseClient.storage.from('videos').upload(filePath, file);
+        if (error) { alert('Upload failed: ' + error.message); return; }
+
+        const { data: urlData } = supabaseClient.storage.from('videos').getPublicUrl(filePath);
+        videoUrl = urlData.publicUrl;
+    } else {
+        videoUrl = document.getElementById('vUrl')?.value.trim();
+        if (!videoUrl) { alert('Please enter a video URL.'); return; }
+    }
+
+    const { error } = await supabaseClient.from('videos').insert({
+        course_id: assignedCourse.id,
+        topic_id: topicId || null,
+        title,
+        video_url: videoUrl,
+        video_type: videoType,
+        added_by: session.user.id
+    });
+
+    if (error) { alert('Error: ' + error.message); return; }
+
+    alert('✓ Video added!');
+    hideModal('addVideoModal');
+    document.getElementById('vTitle').value = '';
+    document.getElementById('vUrl').value = '';
+    loadMyVideos();
+    loadOverview();
+}
+
+async function deleteVideo(id) {
+    if (!confirm('Delete this video?')) return;
+    const { error } = await supabaseClient.from('videos').delete().eq('id', id);
+    if (error) { alert('Error: ' + error.message); return; }
+    loadMyVideos();
+    loadOverview();
 }
