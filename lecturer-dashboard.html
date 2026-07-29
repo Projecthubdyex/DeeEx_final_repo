@@ -15,6 +15,7 @@
     <div class="sidebar-logo">DeeEx <span class="admin-badge" style="background:#92400e">Lecturer</span></div>
     <nav class="sidebar-nav">
         <a href="#" class="nav-link-item active" onclick="showSection('overview', this)">📊 Overview</a>
+        <a href="#" class="nav-link-item" onclick="showSection('courses', this)">📚 Courses</a>
         <a href="#" class="nav-link-item" onclick="showSection('questions', this)">❓ Questions</a>
         <a href="#" class="nav-link-item" onclick="showSection('topics', this)">📚 Topics</a>
         <a href="#" class="nav-link-item" onclick="showSection('notes', this)">📝 Notes</a>
@@ -80,6 +81,16 @@
         </div>
         <div class="dash-card">
             <p style="font-size:13px;color:#666">Welcome! You have access to all courses. Use the sidebar to add questions, topics, notes and videos.</p>
+        </div>
+    </div>
+
+    <!-- COURSES -->
+    <div id="section-courses" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addCourseModal')">+ Add course</button>
+        </div>
+        <div class="admin-grid" id="lecturerCoursesGrid">
+            <p class="empty-msg">Loading courses...</p>
         </div>
     </div>
 
@@ -265,6 +276,19 @@
             <input type="file" id="vFile" accept="video/*">
         </div>
         <button class="admin-btn" onclick="submitVideo()">Save video</button>
+    </div>
+</div>
+
+<div class="modal-overlay" id="addCourseModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('addCourseModal')">✕</button>
+        <h3>Add course</h3>
+        <div class="fg"><label>Course ID</label><input type="text" id="cId" placeholder="e.g. mth-201"></div>
+        <div class="fg"><label>Course code</label><input type="text" id="cCode" placeholder="e.g. MTH 201"></div>
+        <div class="fg"><label>Course title</label><input type="text" id="cTitle" placeholder="e.g. Advanced Calculus"></div>
+        <div class="fg"><label>Department</label><input type="text" id="cDept" placeholder="e.g. mathematics"></div>
+        <div class="fg"><label>Description (optional)</label><textarea id="cDesc" rows="2" placeholder="Brief description"></textarea></div>
+        <button class="admin-btn" onclick="submitCourse()">Save course</button>
     </div>
 </div>
 

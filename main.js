@@ -68,7 +68,11 @@ const loginForm = document.getElementById('loginForm');
          btn.textContent = 'Logging in...';
          btn.disabled = true;
          const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) { alert(error.message); btn.textContent = 'Login'; btn.disabled = false; return; }
+            if (error.message.includes('Invalid login credentials')) {
+    alert('No account found with these details. Please sign up first.');
+    } else {
+    alert(error.message);
+    }
 
             const { data: profile } = await supabaseClient
                 .from('profiles')

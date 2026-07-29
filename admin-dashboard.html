@@ -18,6 +18,7 @@
         <a href="#" class="nav-link-item" onclick="showSection('users', this)">👥 Users</a>
         <a href="#" class="nav-link-item" onclick="showSection('questions', this)">❓ Questions</a>
         <a href="#" class="nav-link-item" onclick="showSection('sessions', this)">📋 Sessions</a>
+        <a href="#" class="nav-link-item" onclick="showSection('courses', this)">📚 Courses</a>
     </nav>
     <div class="sidebar-bottom">
         <div class="user-row">
@@ -145,6 +146,45 @@
                 </tbody>
             </table>
         </div>
+    </div>
+
+    <!-- COURSES -->
+    <div id="section-courses" class="admin-section" style="display:none">
+        <div class="admin-toolbar">
+            <button class="admin-btn" onclick="showModal('addCourseModal')">+ Add course</button>
+        </div>
+        <div class="admin-grid" id="adminCoursesGrid">
+            <p class="empty-msg">Loading courses...</p>
+        </div>
+    </div>
+</div>
+
+<!-- ADD COURSE MODAL -->
+<div class="modal-overlay" id="addCourseModal">
+    <div class="modal-card">
+        <button class="modal-close" onclick="hideModal('addCourseModal')">✕</button>
+        <h3>Add course</h3>
+        <div class="fg">
+            <label>Course ID</label>
+            <input type="text" id="cId" placeholder="e.g. mth-201">
+        </div>
+        <div class="fg">
+            <label>Course code</label>
+            <input type="text" id="cCode" placeholder="e.g. MTH 201">
+        </div>
+        <div class="fg">
+            <label>Course title</label>
+            <input type="text" id="cTitle" placeholder="e.g. Advanced Calculus">
+        </div>
+        <div class="fg">
+            <label>Department</label>
+            <input type="text" id="cDept" placeholder="e.g. mathematics">
+        </div>
+        <div class="fg">
+            <label>Description (optional)</label>
+            <textarea id="cDesc" rows="2" placeholder="Brief description"></textarea>
+        </div>
+        <button class="admin-btn" onclick="submitCourse()">Save course</button>
     </div>
 </div>
 

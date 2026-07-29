@@ -39,6 +39,7 @@ function showSection(name, el) {
     if (name === 'users') loadUsers();
     if (name === 'questions') loadAdminQuestions();
     if (name === 'sessions') loadAdminSessions();
+    if (name === 'courses') loadAdminCourses();
 }
 
 function openSidebar() {
@@ -247,4 +248,72 @@ async function loadAdminSessions() {
             </tr>
         `;
     }).join('');
+}
+
+// ============================
+// COURSES
+// ============================
+function showModal(id) { document.getElementById(id).classList.add('active'); }
+function hideModal(id) { document.getElementById(id).classList.remove('active'); }
+
+async function loadAdminCourses() {
+    const { data: courses } = await supabaseClient
+        .from('courses')
+        .select('*')
+        .order('code');
+
+    const grid = document.getElementById('adminCoursesGrid');
+    if (!grid) return;
+
+    if (!courses || courses.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">No courses yet.</p>';
+        return;
+    }
+
+    grid.innerHTML = courses.map(c => `
+        <div class="admin-grid-card">
+            <h4>${c.code}</h4>
+            <p>${c.title}</p>
+            <p style="font-size:11px;color:#888">${c.department || '—'}</p>
+            <div class="card-actions">
+                <button class="action-btn action-delete" onclick="deleteCourse('${c.id}')">Delete</button>
+            </div>
+        </div>
+    `).join('');
+}
+
+async function submitCourse() {
+    const id = document.getElementById('cId')?.value.trim().toLowerCase().replace(/\s+/g, '-');
+    const code = document.getElementById('cCode')?.value.trim();
+    const title = document.getElementById('cTitle')?.value.trim();
+    const dept = document.getElementById('cDept')?.value.trim();
+    const desc = document.getElementById('cDesc')?.value.trim();
+
+    if (!id || !code || !title) {
+        alert('Course ID, code and title are required.');
+        return;
+    }
+
+    const { error } = await supabaseClient.from('courses').insert({
+        id, code, title,
+        department: dept || 'all',
+        description: desc || null
+    });
+
+    if (error) { alert('Error: ' + error.message); return; }
+
+    alert('✓ Course added!');
+    hideModal('addCourseModal');
+    ['cId', 'cCode', 'cTitle', 'cDept', 'cDesc'].forEach(i => {
+        const el = document.getElementById(i);
+        if (el) el.value = '';
+    });
+    loadAdminCourses();
+}
+
+async function deleteCourse(id) {
+    if (!confirm('Delete this course? This will not delete its questions or topics.')) return;
+    const { error } = await supabaseClient.from('courses').delete().eq('id', id);
+    if (error) { alert('Error: ' + error.message); return; }
+    loadAdminCourses();
 }

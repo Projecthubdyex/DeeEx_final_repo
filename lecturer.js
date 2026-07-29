@@ -38,6 +38,7 @@ function showSection(name, el) {
         name === 'topics' ? 'Topics' :
         name === 'notes' ? 'Notes' :
         name === 'videos' ? 'Videos' : 'Students';
+        name === 'courses' ? 'Courses' : 'Students';
     document.querySelectorAll('.nav-link-item').forEach(l => l.classList.remove('active'));
     if (el) el.classList.add('active');
 
@@ -46,6 +47,7 @@ function showSection(name, el) {
     if (name === 'notes') loadMyNotes();
     if (name === 'videos') loadMyVideos();
     if (name === 'students') loadMyStudents();
+    if (name === 'courses') loadLecturerCourses();
 }
 
 function showModal(id) { document.getElementById(id).classList.add('active'); }
@@ -595,4 +597,60 @@ async function loadMyStudents() {
             </tr>
         `;
     }).join('');
+}
+
+// ============================
+// COURSES
+// ============================
+async function loadLecturerCourses() {
+    const { data: courses } = await supabaseClient
+        .from('courses')
+        .select('*')
+        .order('code');
+
+    const grid = document.getElementById('lecturerCoursesGrid');
+    if (!grid) return;
+
+    if (!courses || courses.length === 0) {
+        grid.innerHTML = '<p class="empty-msg">No courses yet. Add one!</p>';
+        return;
+    }
+
+    grid.innerHTML = courses.map(c => `
+        <div class="admin-grid-card">
+            <h4>${c.code}</h4>
+            <p>${c.title}</p>
+            <p style="font-size:11px;color:#888">${c.department || '—'}</p>
+        </div>
+    `).join('');
+}
+
+async function submitCourse() {
+    const id = document.getElementById('cId')?.value.trim().toLowerCase().replace(/\s+/g, '-');
+    const code = document.getElementById('cCode')?.value.trim();
+    const title = document.getElementById('cTitle')?.value.trim();
+    const dept = document.getElementById('cDept')?.value.trim();
+    const desc = document.getElementById('cDesc')?.value.trim();
+
+    if (!id || !code || !title) {
+        alert('Course ID, code and title are required.');
+        return;
+    }
+
+    const { error } = await supabaseClient.from('courses').insert({
+        id, code, title,
+        department: dept || 'all',
+        description: desc || null
+    });
+
+    if (error) { alert('Error: ' + error.message); return; }
+
+    alert('✓ Course added!');
+    hideModal('addCourseModal');
+    ['cId', 'cCode', 'cTitle', 'cDept', 'cDesc'].forEach(i => {
+        const el = document.getElementById(i);
+        if (el) el.value = '';
+    });
+    loadLecturerCourses();
+    populateCourseDropdowns();
 }
