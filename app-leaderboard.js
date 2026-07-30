@@ -201,3 +201,13 @@ function renderYourRank(data) {
     document.getElementById('yourRankNum').textContent = `#${myIndex + 1}`;
     document.getElementById('yourRankScore').textContent = `${myEntry.avg_score}% average · ${myEntry.sessions} sessions`;
 }
+
+function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('active');
+}
+
+function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('active');
+}
