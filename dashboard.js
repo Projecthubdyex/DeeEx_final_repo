@@ -159,4 +159,11 @@ if (localStorage.getItem('deeex-dark') === 'true') {
     document.body.classList.add('dark-mode');
 }
 
-document.addEventListener('DOMContentLoaded', loadDashboard);
+document.addEventListener('DOMContentLoaded', () => {
+    loadDashboard();
+    document.querySelectorAll('.nav-link-item').forEach(link => {
+        link.addEventListener('click', () => {
+            closeSidebar();
+        });
+    });
+});

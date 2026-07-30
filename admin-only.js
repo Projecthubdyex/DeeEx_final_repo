@@ -29,6 +29,7 @@ let allUsers = [];
 // HELPERS
 // ============================
 function showSection(name, el) {
+    closeSidebar();
     document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
     document.getElementById('section-' + name).style.display = 'block';
     document.getElementById('sectionTitle').textContent =

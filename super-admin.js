@@ -43,6 +43,7 @@ function showModal(id) { document.getElementById(id).classList.add('active'); }
 function hideModal(id) { document.getElementById(id).classList.remove('active'); }
 
 function showSection(name, el) {
+    closeSidebar();
     document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
     document.getElementById('section-' + name).style.display = 'block';
     document.getElementById('sectionTitle').textContent =
