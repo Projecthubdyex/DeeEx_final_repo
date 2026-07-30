@@ -3566,3 +3566,41 @@ body.dark-mode .sidebar-logo {
         max-height: 220px;
     }
 }
+
+/* ── All tables mobile fix ── */
+@media (max-width: 768px) {
+    .admin-table,
+    .progress-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .admin-table td,
+    .admin-table th,
+    .progress-table td,
+    .progress-table th {
+        min-width: 100px;
+        white-space: nowrap;
+    }
+
+    /* Hide less important columns */
+    .admin-table th:nth-child(3),
+    .admin-table td:nth-child(3),
+    .admin-table th:nth-child(4),
+    .admin-table td:nth-child(4) {
+        display: none;
+    }
+
+    /* Card overflow fix */
+    .dash-card {
+        overflow-x: auto;
+    }
+
+    /* Leaderboard table */
+    .lb-table th:nth-child(3),
+    .lb-table td:nth-child(3) {
+        display: none;
+    }
+}
