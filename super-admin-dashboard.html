@@ -314,20 +314,27 @@
         <h3>Assign lecturer</h3>
         <div class="fg">
             <label>Select user</label>
-            <select id="lecturerUserSelect">
-                <option value="">Select a user</option>
+            <select id="lecturerUserId">
+                <option value="">Select user</option>
             </select>
         </div>
         <div class="fg">
-            <label>Assign to course</label>
-            <select id="lecturerCourseSelect">
-                <option value="">Select course</option>
+            <label>Access level</label>
+            <select id="lecturerAccessLevel" onchange="toggleCourseSelection()">
+                <option value="all">All courses</option>
+                <option value="specific">Specific courses only</option>
             </select>
+        </div>
+        <div id="specificCoursesSection" style="display:none">
+            <div class="fg">
+                <label>Select courses (hold Ctrl/Cmd to select multiple)</label>
+                <select id="lecturerCourses" multiple size="8" style="border:1px solid #b9d6f9;border-radius:10px;padding:8px;font-family:inherit;font-size:13px;width:100%">
+                </select>
+            </div>
         </div>
         <button class="admin-btn" onclick="assignLecturer()">Assign</button>
     </div>
 </div>
-
 <!-- Add topic -->
 <div class="modal-overlay" id="addTopicModal">
     <div class="modal-card">

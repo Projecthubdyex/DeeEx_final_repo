@@ -43,7 +43,6 @@ function showModal(id) { document.getElementById(id).classList.add('active'); }
 function hideModal(id) { document.getElementById(id).classList.remove('active'); }
 
 function showSection(name, el) {
-    closeSidebar();
     document.querySelectorAll('.admin-section').forEach(s => s.style.display = 'none');
     document.getElementById('section-' + name).style.display = 'block';
     document.getElementById('sectionTitle').textContent =
@@ -338,34 +337,80 @@ async function loadLecturers() {
 
     const tbody = document.getElementById('lecturersTable');
     if (!lecturers || lecturers.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="5" class="empty-msg">No lecturers yet.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="4" class="empty-msg">No lecturers yet.</td></tr>';
         return;
     }
 
-    // Get question counts per lecturer
-    const { data: questions } = await supabaseClient.from('questions').select('id');
-    const qCount = questions?.length || 0;
+    tbody.innerHTML = lecturers.map(l => {
+        const courses = l.assigned_courses?.includes('all')
+            ? 'All courses'
+            : l.assigned_courses?.join(', ') || '—';
+        return `
+            <tr>
+                <td>${l.full_name}</td>
+                <td style="font-size:12px;color:#666">${courses}</td>
+                <td style="font-size:12px;color:#666">${l.university || '—'}</td>
+                <td>
+                    <button class="action-btn action-delete" onclick="removeLecturer('${l.id}')">Remove</button>
+                </td>
+            </tr>
+        `;
+    }).join('');
 
-    tbody.innerHTML = lecturers.map(l => `
-        <tr>
-            <td>${l.full_name}</td>
-            <td style="font-size:12px;color:#666">${l.id}</td>
-            <td>${l.assigned_course || '—'}</td>
-            <td>${qCount}</td>
-            <td>
-                <button class="action-btn action-delete" onclick="removeLecturer('${l.id}')">Remove</button>
-            </td>
-        </tr>
-    `).join('');
+    // Populate user dropdown
+    const userSelect = document.getElementById('lecturerUserId');
+    if (userSelect) {
+        const { data: users } = await supabaseClient
+            .from('profiles').select('id, full_name').in('role', ['student', 'lecturer']);
+        userSelect.innerHTML = '<option value="">Select user</option>';
+        users?.forEach(u => {
+            const opt = document.createElement('option');
+            opt.value = u.id;
+            opt.textContent = u.full_name;
+            userSelect.appendChild(opt);
+        });
+    }
+
+    // Populate courses multiselect
+    const courseSelect = document.getElementById('lecturerCourses');
+    if (courseSelect) {
+        const { data: courses } = await supabaseClient
+            .from('courses').select('id, code, title').order('code');
+        courseSelect.innerHTML = '';
+        courses?.forEach(c => {
+            const opt = document.createElement('option');
+            opt.value = c.id;
+            opt.textContent = `${c.code} — ${c.title}`;
+            courseSelect.appendChild(opt);
+        });
+    }
+}
+
+function toggleCourseSelection() {
+    const level = document.getElementById('lecturerAccessLevel').value;
+    document.getElementById('specificCoursesSection').style.display =
+        level === 'specific' ? 'block' : 'none';
 }
 
 async function assignLecturer() {
-    const userId = document.getElementById('lecturerUserSelect').value;
-    const courseId = document.getElementById('lecturerCourseSelect').value;
-    if (!userId || !courseId) { alert('Please select both a user and a course.'); return; }
+    const userId = document.getElementById('lecturerUserId').value;
+    const accessLevel = document.getElementById('lecturerAccessLevel').value;
+
+    if (!userId) { alert('Please select a user.'); return; }
+
+    let assignedCourses = ['all'];
+
+    if (accessLevel === 'specific') {
+        const select = document.getElementById('lecturerCourses');
+        const selected = Array.from(select.selectedOptions).map(o => o.value);
+        if (selected.length === 0) { alert('Please select at least one course.'); return; }
+        assignedCourses = selected;
+    }
 
     const { error } = await supabaseClient
-        .from('profiles').update({ role: 'lecturer', assigned_course: courseId }).eq('id', userId);
+        .from('profiles')
+        .update({ role: 'lecturer', assigned_courses: assignedCourses })
+        .eq('id', userId);
 
     if (error) { alert('Error: ' + error.message); return; }
     alert('✓ Lecturer assigned!');
@@ -376,7 +421,7 @@ async function assignLecturer() {
 async function removeLecturer(id) {
     if (!confirm('Remove lecturer role from this user?')) return;
     const { error } = await supabaseClient
-        .from('profiles').update({ role: 'student', assigned_course: '' }).eq('id', id);
+        .from('profiles').update({ role: 'student', assigned_courses: [] }).eq('id', id);
     if (error) { alert('Error: ' + error.message); return; }
     loadLecturers();
 }
